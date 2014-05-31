@@ -1,9 +1,25 @@
 package models
 
-import play.api.libs.json.Json
+import com.mohiva.play.silhouette.core.{LoginInfo, Identity}
+import java.util.UUID
 
-case class User(id: Int, username: String, email: String, twitter_id: Int, google_id: Int, admin_flag: Boolean)
-
-object User {
-  implicit val clientFormat = Json.format[User]
-}
+/**
+ * The user object.
+ *
+ * @param userID The unique ID of the user.
+ * @param loginInfo The linked login info.
+ * @param firstName Maybe the first name of the authenticated user.
+ * @param lastName Maybe the last name of the authenticated user.
+ * @param fullName Maybe the full name of the authenticated user.
+ * @param email Maybe the email of the authenticated provider.
+ * @param avatarURL Maybe the avatar URL of the authenticated provider.
+ */
+case class User(
+  userID: UUID,
+  loginInfo: LoginInfo,
+  firstName: Option[String],
+  lastName: Option[String],
+  fullName: Option[String],
+  email: Option[String],
+  avatarURL: Option[String]
+) extends Identity
