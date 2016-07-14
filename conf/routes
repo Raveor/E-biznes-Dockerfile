@@ -59,5 +59,15 @@ GET     /api/clients                    controllers.UserController.getAllUsers
 GET     /api/client/:id                 controllers.UserController.getUserById(id: Integer)
 PATCH   /api/client/:id                 controllers.UserController.editUser(id: Integer)
 
+GET         /password/forgot                 controllers.ForgotPasswordController.view
+POST        /password/forgot                 controllers.ForgotPasswordController.submit
+GET         /password/reset/:token           controllers.ResetPasswordController.view(token: java.util.UUID)
+POST        /password/reset/:token           controllers.ResetPasswordController.submit(token: java.util.UUID)
+GET         /password/change                 controllers.ChangePasswordController.view
+POST        /password/change                 controllers.ChangePasswordController.submit
+
+GET         /account/email/:email            controllers.ActivateAccountController.send(email: String)
+GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file                          controllers.FrontendController.assetOrDefault(file)
