@@ -5,6 +5,51 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
+
+# auth
+POST    /auth/login                 controllers.AuthController.login
+POST    /auth/register              controllers.AuthController.register
+POST    /auth/logout                controllers.AuthController.logout
+
+# admin routes
+GET     /admins/                    controllers.AdminController.getAllAdmins
+PUT     /admin                      controllers.AdminController.addAdmin
+PATCH   /admin/:id                  controllers.AdminController.editAdmin(id: Integer)
+DELETE  /admin/:id                  controllers.AdminController.deleteAdmin(id: Integer)
+
+# book routes
+GET     /books                      controllers.BooksController.getAllBooks
+GET     /book/:id                   controllers.BooksController.getBookById(id: Integer)
+PUT     /book                       controllers.BooksController.addBook
+DELETE  /book/:id                   controllers.BooksController.deleteBook(id: Integer)
+PATCH   /book/:id                   controllers.BooksController.editBook(id: Integer)
+
+# publishing house routes
+GET     /publishingHouse            controllers.PublishingHouseController.getAllPublishingHouse
+GET     /publishingHouse/:id        controllers.PublishingHouseController.getPublishingHouseById(id: Integer)
+PUT     /publishingHouse            controllers.PublishingHouseController.addPublishingHouse
+DELETE  /publishingHouse/:id        controllers.PublishingHouseController.deletePublishingHouse(id: Integer)
+PATCH   /publishingHouse/:id        controllers.PublishingHouseController.editPublishingHouse(id: Integer)
+
+# author routes
+GET     /author                     controllers.AuthorController.getAllAuthors
+GET     /author/:id                 controllers.AuthorController.getAuthorById(id: Integer)
+PUT     /author                     controllers.AuthorController.addAuthor
+DELETE  /author/:id                 controllers.AuthorController.deleteAuthor(id: Integer)
+PATCH   /author/:id                 controllers.AuthorController.editAuthor(id: Integer)
+
+# orders routes
+GET     /orders                     controllers.OrdersController.getAllOrders
+GET     /order/:id                  controllers.OrdersController.getOrderById(id: Integer)
+PUT     /order                      controllers.OrdersController.addOrder
+DELETE  /order/:id                  controllers.OrdersController.deleteOrder(id: Integer)
+PATCH   /order/:id                  controllers.OrdersController.editOrder(id: Integer)
+
+# clients routes
+GET     /clients                    controllers.ClientController.getAllClients
+GET     /client/:id                 controllers.ClientController.getClientById(id: Integer)
+PATCH   /client/:id                 controllers.ClientController.editClient(id: Integer)
+
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
 # An example controller showing how to write asynchronous code
@@ -12,5 +57,3 @@ GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-      
