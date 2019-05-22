@@ -1,0 +1,49 @@
+package models
+
+import javax.inject.{Inject, Singleton}
+import play.api.db.slick.DatabaseConfigProvider
+import slick.jdbc.JdbcProfile
+
+import scala.concurrent.{ExecutionContext, Future}
+
+@Singleton
+private class BookRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, authorRepository: AuthorRepository,
+                               publishingHouseRepository: PublishingHouseRepository)(implicit ec: ExecutionContext) {
+  val dbConfig = dbConfigProvider.get[JdbcProfile]
+
+  import dbConfig._
+  import profile.api._
+
+
+  private class BookTable(tag: Tag) extends Table[Book](tag, "t_books") {
+    def id = column[Int]("book_id", O.PrimaryKey, O.AutoInc)
+
+    def title = column[String]("title")
+
+    def author = column[Int]("author_id")
+
+    def publishingHouse = column[Int]("publishing_house_id")
+
+    def publishYear = column[Int]("publishYear")
+
+    def description = column[String]("description")
+
+    def price = column[Float]("book_price")
+
+    def author_fk = foreignKey("ct_t_books_author_fk", author, authorTable)(_.id)
+    def publishing_house_fk = foreignKey("ct_t_books_publishing_house_fk", publishingHouse, publishingHouseTable)(_.id)
+
+    def * = (id, title, author, publishingHouse, publishYear, description, price) <> ((Book.apply _).tupled, Book.unapply)
+  }
+  import authorRepository.AuthorTable
+  import publishingHouseRepository.PublishingHouseTable
+
+  private val authorTable = TableQuery[AuthorTable]
+  private val publishingHouseTable = TableQuery[PublishingHouseTable]
+
+  private val book = TableQuery[BookTable]
+
+  def list(): Future[Seq[Book]] = db.run {
+    book.result
+  }
+}
