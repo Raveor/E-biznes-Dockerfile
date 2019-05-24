@@ -7,15 +7,15 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-private class BookRepository @Inject()(dbConfigProvider: DatabaseConfigProvider, authorRepository: AuthorRepository,
-                               publishingHouseRepository: PublishingHouseRepository)(implicit ec: ExecutionContext) {
+class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val authorRepository: AuthorRepository,
+                               val publishingHouseRepository: PublishingHouseRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
   import profile.api._
 
 
-  private class BookTable(tag: Tag) extends Table[Book](tag, "t_books") {
+  class BookTable(tag: Tag) extends Table[Book](tag, "t_books") {
     def id = column[Int]("book_id", O.PrimaryKey, O.AutoInc)
 
     def title = column[String]("title")
@@ -38,8 +38,8 @@ private class BookRepository @Inject()(dbConfigProvider: DatabaseConfigProvider,
   import authorRepository.AuthorTable
   import publishingHouseRepository.PublishingHouseTable
 
-  private val authorTable = TableQuery[AuthorTable]
-  private val publishingHouseTable = TableQuery[PublishingHouseTable]
+  val authorTable = TableQuery[AuthorTable]
+  val publishingHouseTable = TableQuery[PublishingHouseTable]
 
   private val book = TableQuery[BookTable]
 
