@@ -29,4 +29,11 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
   def list(): Future[Seq[Author]] = db.run {
     author.result
   }
+
+  def getById(id: Int): Future[Seq[Author]] = db.run {
+    author
+      .filter(_.id === id)
+      .result
+  }
+
 }

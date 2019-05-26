@@ -19,8 +19,10 @@ class ClientController @Inject()(cc: ControllerComponents, clientRepository: Cli
       .map(clients => Ok(Json.toJson(clients)))
   }
 
-  def getClientById(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getClientById(id: Integer) = Action.async { implicit request =>
+    clientRepository
+      .getById(id)
+      .map(client => Ok(Json.toJson(client)))
   }
 
   def editClient(id: Integer) = Action {

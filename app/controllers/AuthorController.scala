@@ -20,8 +20,10 @@ class AuthorController @Inject()(cc: ControllerComponents, actorSystem: ActorSys
       .map( authors => Ok(Json.toJson(authors)))
   }
 
-  def getAuthorById(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getAuthorById(id: Integer) = Action.async { implicit request =>
+    authorRepository
+      .getById(id)
+      .map(author => Ok(Json.toJson(author)))
   }
 
   def addAuthor = Action {

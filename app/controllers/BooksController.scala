@@ -20,8 +20,10 @@ class BooksController @Inject()(cc: ControllerComponents, bookRepository: BookRe
       }
   }
 
-  def getBookById(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getBookById(id: Integer) = Action.async { implicit request =>
+    bookRepository
+      .getById(id)
+      .map(book => Ok(Json.toJson(book)))
   }
 
   def addBook = Action {

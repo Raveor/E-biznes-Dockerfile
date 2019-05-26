@@ -19,8 +19,10 @@ class PublishingHouseController @Inject()(cc: ControllerComponents, actorSystem:
       .map(publishingHouses => Ok(Json.toJson(publishingHouses)))
   }
 
-  def getPublishingHouseById(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getPublishingHouseById(id: Integer) = Action.async { implicit request =>
+    publishingHouseRepository
+      .getById(id)
+      .map(publishingHouse => Ok(Json.toJson(publishingHouse)))
   }
 
   def addPublishingHouse = Action {

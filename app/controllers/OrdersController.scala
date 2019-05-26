@@ -18,8 +18,10 @@ class OrdersController @Inject()(cc: ControllerComponents, actorSystem: ActorSys
       .map(orders => Ok(Json.toJson(orders)))
   }
 
-  def getOrderById(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getOrderById(id: Integer) = Action.async { implicit request =>
+    orderRepository
+      .getById(id)
+      .map(order => Ok(Json.toJson(order)))
   }
 
   def addOrder = Action {
