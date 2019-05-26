@@ -28,4 +28,11 @@ class BookTypeRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
   def list(): Future[Seq[BookType]] = db.run {
     bookType.result
   }
+
+  def getById(id: Int): Future[Seq[BookType]] = db.run {
+    bookType
+      .filter(_.id === id)
+      .result
+  }
+
 }

@@ -17,9 +17,9 @@ class Order2BooksRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
   import profile.api._
 
   class Order2BooksTable(tag: Tag) extends Table[Order2Books](tag, "t_order2books") {
-    def order_id = column[Int]("order_id", O.PrimaryKey, O.AutoInc)
+    def order_id = column[Int]("order_id", O.PrimaryKey)
 
-    def book_id = column[Int]("book_id")
+    def book_id = column[Int]("book_id", O.PrimaryKey)
 
     def book_fk = foreignKey("ct_t_order2books_book_id_fk", book_id, bookTable)(_.id)
     def order_fk = foreignKey("ct_t_order2books_order_id_fk", order_id, orderTable)(_.id)
@@ -34,4 +34,12 @@ class Order2BooksRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
   def list(): Future[Seq[Order2Books]] = db.run {
     order2Books.result
   }
+
+  def getByIds(order_id: Int, book_id: Int): Future[Seq[Order2Books]] = db.run {
+    order2Books
+      .filter(_.book_id === book_id)
+      .filter(_.order_id === order_id)
+      .result
+  }
+
 }

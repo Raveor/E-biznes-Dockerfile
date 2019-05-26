@@ -30,4 +30,11 @@ class ClientRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
   def list(): Future[Seq[Client]] = db.run {
     client.result
   }
+
+  def getById(id: Int): Future[Seq[Client]] = db.run {
+    client
+      .filter(_.id === id)
+      .result
+  }
+
 }

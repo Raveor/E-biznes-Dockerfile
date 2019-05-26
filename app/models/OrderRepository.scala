@@ -29,4 +29,11 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
   def list(): Future[Seq[Order]] = db.run {
     order.result
   }
+
+  def getById(id: Int): Future[Seq[Order]] = db.run {
+    order
+      .filter(_.id === id)
+      .result
+  }
+
 }

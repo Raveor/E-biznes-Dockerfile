@@ -24,7 +24,7 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
 
     def publishingHouse = column[Int]("publishing_house_id")
 
-    def publishYear = column[Int]("publishYear")
+    def publishYear = column[Int]("publish_year")
 
     def description = column[String]("description")
 
@@ -46,4 +46,11 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   def list(): Future[Seq[Book]] = db.run {
     book.result
   }
+
+  def getById(id: Int): Future[Seq[Book]] = db.run {
+    book
+      .filter(_.id === id)
+      .result
+  }
+
 }

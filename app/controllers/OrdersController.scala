@@ -2,31 +2,36 @@ package controllers
 
 import akka.actor.ActorSystem
 import javax.inject._
+import models.OrderRepository
+import play.api.libs.json.Json
 import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
 
 
 @Singleton
-class OrdersController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem)(implicit exec: ExecutionContext) extends AbstractController(cc) {
-  def getAllOrders = Action {
-    Ok(views.html.index("administration/categories/add"))
+class OrdersController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem, orderRepository: OrderRepository)
+                                (implicit exec: ExecutionContext) extends AbstractController(cc) {
+  def getAllOrders = Action.async { implicit request =>
+    orderRepository
+      .list()
+      .map(orders => Ok(Json.toJson(orders)))
   }
 
   def getOrderById(id: Integer) = Action {
-    Ok(views.html.index("administration/categories/add"))
+    Ok(Json.obj("content" -> "Scala Play React Seed"))
   }
 
   def addOrder = Action {
-    Ok(views.html.index("administration/categories/add"))
+    Ok(Json.obj("content" -> "Scala Play React Seed"))
   }
 
   def deleteOrder(id: Integer) = Action {
-    Ok(views.html.index("administration/categories/add"))
+    Ok(Json.obj("content" -> "Scala Play React Seed"))
   }
 
   def editOrder(id: Integer) = Action {
-    Ok(views.html.index("administration/categories/add"))
+    Ok(Json.obj("content" -> "Scala Play React Seed"))
   }
 
 }

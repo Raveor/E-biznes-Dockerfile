@@ -4,56 +4,51 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET     /                               controllers.FrontendController.index
 
 # auth
-POST    /auth/login                 controllers.AuthController.login
-POST    /auth/register              controllers.AuthController.register
-POST    /auth/logout                controllers.AuthController.logout
+POST    /api/auth/login                 controllers.AuthController.login
+POST    /api/auth/register              controllers.AuthController.register
+POST    /api/auth/logout                controllers.AuthController.logout
 
 # admin routes
-GET     /admins/                    controllers.AdminController.getAllAdmins
-PUT     /admin                      controllers.AdminController.addAdmin
-PATCH   /admin/:id                  controllers.AdminController.editAdmin(id: Integer)
-DELETE  /admin/:id                  controllers.AdminController.deleteAdmin(id: Integer)
+GET     /api/admins/                    controllers.AdminController.getAllAdmins
+PUT     /api/admin                      controllers.AdminController.addAdmin
+PATCH   /api/admin/:id                  controllers.AdminController.editAdmin(id: Integer)
+DELETE  /api/admin/:id                  controllers.AdminController.deleteAdmin(id: Integer)
 
 # book routes
-GET     /books                      controllers.BooksController.getAllBooks
-GET     /book/:id                   controllers.BooksController.getBookById(id: Integer)
-PUT     /book                       controllers.BooksController.addBook
-DELETE  /book/:id                   controllers.BooksController.deleteBook(id: Integer)
-PATCH   /book/:id                   controllers.BooksController.editBook(id: Integer)
+GET     /api/books                      controllers.BooksController.getAllBooks
+GET     /api/book/:id                   controllers.BooksController.getBookById(id: Integer)
+PUT     /api/book                       controllers.BooksController.addBook
+DELETE  /api/book/:id                   controllers.BooksController.deleteBook(id: Integer)
+PATCH   /api/book/:id                   controllers.BooksController.editBook(id: Integer)
 
 # publishing house routes
-GET     /publishingHouse            controllers.PublishingHouseController.getAllPublishingHouse
-GET     /publishingHouse/:id        controllers.PublishingHouseController.getPublishingHouseById(id: Integer)
-PUT     /publishingHouse            controllers.PublishingHouseController.addPublishingHouse
-DELETE  /publishingHouse/:id        controllers.PublishingHouseController.deletePublishingHouse(id: Integer)
-PATCH   /publishingHouse/:id        controllers.PublishingHouseController.editPublishingHouse(id: Integer)
+GET     /api/publishingHouse            controllers.PublishingHouseController.getAllPublishingHouse
+GET     /api/publishingHouse/:id        controllers.PublishingHouseController.getPublishingHouseById(id: Integer)
+PUT     /api/publishingHouse            controllers.PublishingHouseController.addPublishingHouse
+DELETE  /api/publishingHouse/:id        controllers.PublishingHouseController.deletePublishingHouse(id: Integer)
+PATCH   /api/publishingHouse/:id        controllers.PublishingHouseController.editPublishingHouse(id: Integer)
 
 # author routes
-GET     /author                     controllers.AuthorController.getAllAuthors
-GET     /author/:id                 controllers.AuthorController.getAuthorById(id: Integer)
-PUT     /author                     controllers.AuthorController.addAuthor
-DELETE  /author/:id                 controllers.AuthorController.deleteAuthor(id: Integer)
-PATCH   /author/:id                 controllers.AuthorController.editAuthor(id: Integer)
+GET     /api/author                     controllers.AuthorController.getAllAuthors
+GET     /api/author/:id                 controllers.AuthorController.getAuthorById(id: Integer)
+PUT     /api/author                     controllers.AuthorController.addAuthor
+DELETE  /api/author/:id                 controllers.AuthorController.deleteAuthor(id: Integer)
+PATCH   /api/author/:id                 controllers.AuthorController.editAuthor(id: Integer)
 
 # orders routes
-GET     /orders                     controllers.OrdersController.getAllOrders
-GET     /order/:id                  controllers.OrdersController.getOrderById(id: Integer)
-PUT     /order                      controllers.OrdersController.addOrder
-DELETE  /order/:id                  controllers.OrdersController.deleteOrder(id: Integer)
-PATCH   /order/:id                  controllers.OrdersController.editOrder(id: Integer)
+GET     /api/orders                     controllers.OrdersController.getAllOrders
+GET     /api/order/:id                  controllers.OrdersController.getOrderById(id: Integer)
+PUT     /api/order                      controllers.OrdersController.addOrder
+DELETE  /api/order/:id                  controllers.OrdersController.deleteOrder(id: Integer)
+PATCH   /api/order/:id                  controllers.OrdersController.editOrder(id: Integer)
 
 # clients routes
-GET     /clients                    controllers.ClientController.getAllClients
-GET     /client/:id                 controllers.ClientController.getClientById(id: Integer)
-PATCH   /client/:id                 controllers.ClientController.editClient(id: Integer)
-
-# An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
-# An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET     /api/clients                    controllers.ClientController.getAllClients
+GET     /api/client/:id                 controllers.ClientController.getClientById(id: Integer)
+PATCH   /api/client/:id                 controllers.ClientController.editClient(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET     /*file                      controllers.FrontendController.assetOrDefault(file)

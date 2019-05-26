@@ -27,4 +27,11 @@ class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvid
   def list(): Future[Seq[PublishingHouse]] = db.run {
     publishingHouse.result
   }
+
+  def getById(id: Int): Future[Seq[PublishingHouse]] = db.run {
+    publishingHouse
+      .filter(_.id === id)
+      .result
+  }
+
 }
