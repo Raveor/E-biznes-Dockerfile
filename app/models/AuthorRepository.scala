@@ -36,4 +36,7 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
       .result
   }
 
+  def insert(name: String, surname: String) : Future[Int] = db.run{
+    author += Author(0, surname, name)
+  }
 }

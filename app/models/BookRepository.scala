@@ -41,16 +41,15 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
   val authorTable = TableQuery[AuthorTable]
   val publishingHouseTable = TableQuery[PublishingHouseTable]
 
-  private val book = TableQuery[BookTable]
+  private val bookTable = TableQuery[BookTable]
 
   def list(): Future[Seq[Book]] = db.run {
-    book.result
+    bookTable.result
   }
 
   def getById(id: Int): Future[Seq[Book]] = db.run {
-    book
+    bookTable
       .filter(_.id === id)
       .result
   }
-
 }

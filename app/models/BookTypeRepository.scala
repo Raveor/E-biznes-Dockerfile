@@ -35,4 +35,8 @@ class BookTypeRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
       .result
   }
 
+  def insert(name: String): Future[Int] = db.run {
+    bookType += BookType(0, name)
+  }
+
 }

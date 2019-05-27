@@ -12,7 +12,7 @@ POST    /api/auth/register              controllers.AuthController.register
 POST    /api/auth/logout                controllers.AuthController.logout
 
 # admin routes
-GET     /api/admins/                    controllers.AdminController.getAllAdmins
+GET     /api/admins                     controllers.AdminController.getAllAdmins
 PUT     /api/admin                      controllers.AdminController.addAdmin
 PATCH   /api/admin/:id                  controllers.AdminController.editAdmin(id: Integer)
 DELETE  /api/admin/:id                  controllers.AdminController.deleteAdmin(id: Integer)
@@ -24,15 +24,23 @@ PUT     /api/book                       controllers.BooksController.addBook
 DELETE  /api/book/:id                   controllers.BooksController.deleteBook(id: Integer)
 PATCH   /api/book/:id                   controllers.BooksController.editBook(id: Integer)
 
+# book type routes
+GET     /api/bookTypes                  controllers.BookTypeController.getAllTypes
+GET     /api/bookType/:id               controllers.BookTypeController.getTypeById(id: Integer)
+PUT     /api/bookType                   controllers.BookTypeController.addType
+DELETE  /api/bookType/:id               controllers.BookTypeController.deleteType(id: Integer)
+PATCH   /api/bookType/:id               controllers.BookTypeController.editType(id: Integer)
+
+
 # publishing house routes
-GET     /api/publishingHouse            controllers.PublishingHouseController.getAllPublishingHouse
+GET     /api/publishingHouses           controllers.PublishingHouseController.getAllPublishingHouse
 GET     /api/publishingHouse/:id        controllers.PublishingHouseController.getPublishingHouseById(id: Integer)
 PUT     /api/publishingHouse            controllers.PublishingHouseController.addPublishingHouse
 DELETE  /api/publishingHouse/:id        controllers.PublishingHouseController.deletePublishingHouse(id: Integer)
 PATCH   /api/publishingHouse/:id        controllers.PublishingHouseController.editPublishingHouse(id: Integer)
 
 # author routes
-GET     /api/author                     controllers.AuthorController.getAllAuthors
+GET     /api/authors                    controllers.AuthorController.getAllAuthors
 GET     /api/author/:id                 controllers.AuthorController.getAuthorById(id: Integer)
 PUT     /api/author                     controllers.AuthorController.addAuthor
 DELETE  /api/author/:id                 controllers.AuthorController.deleteAuthor(id: Integer)
@@ -51,4 +59,4 @@ GET     /api/client/:id                 controllers.ClientController.getClientBy
 PATCH   /api/client/:id                 controllers.ClientController.editClient(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /*file                      controllers.FrontendController.assetOrDefault(file)
+GET     /*file                          controllers.FrontendController.assetOrDefault(file)

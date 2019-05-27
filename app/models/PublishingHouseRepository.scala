@@ -34,4 +34,8 @@ class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvid
       .result
   }
 
+  def insert(name: String): Future[Int] = db.run {
+    publishingHouse += PublishingHouse(0, name)
+  }
+
 }
