@@ -39,4 +39,12 @@ class BookTypeRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
     bookType += BookType(0, name)
   }
 
+  def edit(id: Int, name:String) : Future[Int] = db.run {
+    bookType.filter(_.id === id).update(BookType(id, name))
+  }
+
+  def delete(id: Int) : Future[Int] = db.run {
+    bookType.filter(_.id === id).delete
+  }
+
 }

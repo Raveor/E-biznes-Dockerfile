@@ -39,4 +39,12 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
   def insert(name: String, surname: String) : Future[Int] = db.run{
     author += Author(0, surname, name)
   }
+
+  def edit(id: Int, surname: String, name:String) : Future[Int] = db.run {
+    author.filter(_.id === id).update(Author(id, surname, name))
+  }
+
+  def delete(id: Int) : Future[Int] = db.run {
+    author.filter(_.id === id).delete
+  }
 }

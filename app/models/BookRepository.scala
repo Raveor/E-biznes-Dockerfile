@@ -8,7 +8,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val authorRepository: AuthorRepository,
-                               val publishingHouseRepository: PublishingHouseRepository)(implicit ec: ExecutionContext) {
+                               val publishingHouseRepository: PublishingHouseRepository,
+                               val bookTypeRepository: BookTypeRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -30,16 +31,21 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
 
     def price = column[Float]("book_price")
 
+    def bookType = column[Int]("book_type_id")
+
+    def book_type_fk = foreignKey("ct_t_books_book_type_id_fk", bookType, bookTypeTable)(_.id)
     def author_fk = foreignKey("ct_t_books_author_fk", author, authorTable)(_.id)
     def publishing_house_fk = foreignKey("ct_t_books_publishing_house_fk", publishingHouse, publishingHouseTable)(_.id)
 
-    def * = (id, title, author, publishingHouse, publishYear, description, price) <> ((Book.apply _).tupled, Book.unapply)
+    def * = (id, title, author, publishingHouse, publishYear, description, price, bookType) <> ((Book.apply _).tupled, Book.unapply)
   }
   import authorRepository.AuthorTable
   import publishingHouseRepository.PublishingHouseTable
+  import bookTypeRepository.BookTypeTable
 
   val authorTable = TableQuery[AuthorTable]
   val publishingHouseTable = TableQuery[PublishingHouseTable]
+  val bookTypeTable = TableQuery[BookTypeTable]
 
   private val bookTable = TableQuery[BookTable]
 
@@ -52,4 +58,13 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
       .filter(_.id === id)
       .result
   }
+
+  def edit(id: Int, title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int) : Future[Int] = db.run {
+    bookTable.filter(_.id === id).update(Book(id, title, author, publishingHouse, publishYear, description, price, bookType))
+  }
+
+  def delete(id: Int) : Future[Int] = db.run {
+    bookTable.filter(_.id === id).delete
+  }
+
 }

@@ -1,0 +1,14 @@
+{
+  "store_name": "My Awesome Bookstore",
+  "store_slug": "react-stripe-store",
+  "colors": {
+    "primary": {
+      "main": "#FF6A64",
+      "dark": "#BF4F4B",
+      "contrastText": "#FFF"
+    },
+    "secondary": {
+      "main": "#74EBD5"
+    }
+  }
+}

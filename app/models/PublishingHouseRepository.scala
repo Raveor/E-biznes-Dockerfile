@@ -38,4 +38,12 @@ class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvid
     publishingHouse += PublishingHouse(0, name)
   }
 
+  def edit(id: Int, name:String) : Future[Int] = db.run {
+    publishingHouse.filter(_.id === id).update(PublishingHouse(id, name))
+  }
+
+  def delete(id: Int) : Future[Int] = db.run {
+    publishingHouse.filter(_.id === id).delete
+  }
+
 }

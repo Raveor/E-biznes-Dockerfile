@@ -36,4 +36,12 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
       .result
   }
 
+  def edit(id: Int, client_id: Int) : Future[Int] = db.run {
+    order.filter(_.id === id).update(Order(id, client_id))
+  }
+
+  def delete(id: Int) : Future[Int] = db.run {
+    order.filter(_.id === id).delete
+  }
+
 }

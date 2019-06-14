@@ -42,4 +42,12 @@ class Order2BooksRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
       .result
   }
 
+  def delete(order_id: Int, book_id: Int) : Future[Int] = db.run {
+    order2Books
+      .filter(_.book_id === book_id)
+      .filter(_.order_id === order_id)
+      .delete
+  }
+
+
 }
