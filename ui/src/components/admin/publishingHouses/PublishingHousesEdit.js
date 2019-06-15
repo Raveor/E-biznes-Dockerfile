@@ -24,18 +24,22 @@ class PublishingHousesEdit extends Component {
     }
 
     editPublishingHouse = () => {
-        const publishingHouse = {
-            name: this.state.name,
-        };
-        axios.patch("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id, {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+        if(window.token !== undefined) {
+            const publishingHouse = {
+                name: this.state.name
+            };
+            axios.patch("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id, {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+        }
     };
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id).then(data => {
-            this.setState({
-                name: data.data[0].name,
+        if(window.token !== undefined) {
+            axios.get("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id).then(data => {
+                this.setState({
+                    name: data.data[0].name,
+                })
             })
-        })
+        }
     }
 
     setNameState = event => {

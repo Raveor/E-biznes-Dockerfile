@@ -53,11 +53,13 @@ class PublishingHousesList extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/publishingHouses").then(data => {
-            this.setState({
-                publishingHouses : data.data
+        if(window.token !== undefined) {
+            axios.get("http://localhost:9000/api/publishingHouses").then(data => {
+                this.setState({
+                    publishingHouses : data.data
+                });
             });
-        });
+        }
     }
 
      handleClickOpen(id) {
@@ -74,16 +76,18 @@ class PublishingHousesList extends Component {
     }
 
     handleAgree() {
-        this.setState({
-            open: false
-        });
-
-        axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId)
-            .then(data => {
-                alert("Usunieto wydawnictwo!");
-                this.setState({deleteId: null});
-                this.componentDidMount();
+        if(window.token !== undefined) {
+            this.setState({
+                open: false
             });
+
+            axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId)
+                .then(data => {
+                    alert("Usunieto wydawnictwo!");
+                    this.setState({deleteId: null});
+                    this.componentDidMount();
+                });
+        }
     }
 
     render() {

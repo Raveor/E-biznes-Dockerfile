@@ -24,11 +24,13 @@ class PublishingHousesAdd extends Component {
     }
 
     addPublishingHouse = () => {
-        const publishingHouse = {
-            name: this.state.name,
-        };
+        if(window.token !== undefined) {
+            const publishingHouse = {
+                name: this.state.name
+            };
 
-        axios.put("http://localhost:9000/api/publishingHouse", {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+            axios.put("http://localhost:9000/api/publishingHouse", {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+        }
     };
 
     setNameState = event => {

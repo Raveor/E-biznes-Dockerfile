@@ -33,36 +33,40 @@ class BooksEdit extends Component {
     }
 
     componentDidMount() {
-        axios.all([axios.get("http://localhost:9000/api/book/" + this.props.match.params.id),
-            axios.get("http://localhost:9000/api/bookTypes"),
-            axios.get("http://localhost:9000/api/authors"),
-            axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((book, bookTypes, authors, publishingHouses) => {
-            this.setState({
-                title: book.data[0].title,
-                author: book.data[0].author,
-                publishingHouse: book.data[0].publishingHouse,
-                publishYear: book.data[0].publishYear,
-                description: book.data[0].description,
-                price: book.data[0].price,
-                bookType: book.data[0].bookType,
-                bookTypes: bookTypes.data,
-                authors: authors.data,
-                publishingHouses: publishingHouses.data
-            })
-        }));
+        if(window.token !== undefined) {
+            axios.all([axios.get("http://localhost:9000/api/book/" + this.props.match.params.id),
+                axios.get("http://localhost:9000/api/bookTypes"),
+                axios.get("http://localhost:9000/api/authors"),
+                axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((book, bookTypes, authors, publishingHouses) => {
+                this.setState({
+                    title: book.data[0].title,
+                    author: book.data[0].author,
+                    publishingHouse: book.data[0].publishingHouse,
+                    publishYear: book.data[0].publishYear,
+                    description: book.data[0].description,
+                    price: book.data[0].price,
+                    bookType: book.data[0].bookType,
+                    bookTypes: bookTypes.data,
+                    authors: authors.data,
+                    publishingHouses: publishingHouses.data
+                })
+            }));
+        }
     }
 
     editBook = () => {
-        const book = {
-            title: this.state.title,
-            author: this.state.author,
-            publishingHouse: this.state.publishingHouse,
-            publishYear: this.state.publishYear,
-            description: this.state.description,
-            price: this.state.price,
-            bookType: this.state.bookType
-        };
-        axios.patch("http://localhost:9000/api/book/" + this.props.match.params.id, {book}).then(this.props.history.push(`/admin/books`));
+        if(window.token) {
+            const book = {
+                title: this.state.title,
+                author: this.state.author,
+                publishingHouse: this.state.publishingHouse,
+                publishYear: this.state.publishYear,
+                description: this.state.description,
+                price: this.state.price,
+                bookType: this.state.bookType
+            };
+            axios.patch("http://localhost:9000/api/book/" + this.props.match.params.id, {book}).then(this.props.history.push(`/admin/books`));
+        }
     };
 
     setTitleState = event => {

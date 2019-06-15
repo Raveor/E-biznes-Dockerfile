@@ -33,60 +33,72 @@ const Wrapper = styled.div`
 
 class Admin extends Component {
   render() {
-    return (
-        <PageWrapper>
-            <Paper>
-                <Wrapper>
-                    <Table>
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th><h1>Admin panel</h1></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <Link to={`/admin/authors`} style={{ textDecoration: "none" }}>
-                                    Authors
-                                </Link>
-                            </td>
-                            <td>
-                                <Link to={`/admin/books`} style={{ textDecoration: "none" }}>
-                                    Books
-                                </Link>
-                            </td>
-                            <td>
-                                <Link to={`/admin/bookTypes`} style={{ textDecoration: "none" }}>
-                                    Book types
-                                </Link>
-                            </td>
-                            <td>
-                                <Link to={`/admin/orders`} style={{ textDecoration: "none" }}>
-                                    Orders
-                                </Link>
-                            </td>
-                            <td>
-                                <Link to={`/admin/publishingHouses`} style={{ textDecoration: "none" }}>
-                                    Publishing houses
-                                </Link>
-                            </td>
-                            <td>
-                                <Link to={`/admin/users`} style={{ textDecoration: "none" }}>
-                                    Users
-                                </Link>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </Table>
-                </Wrapper>
-            </Paper>
-        </PageWrapper>
-    )
+      if(window.token !== undefined) {
+          return (
+              <PageWrapper>
+                  <Paper>
+                      <Wrapper>
+                          <Table>
+                              <thead>
+                              <tr>
+                                  <th></th>
+                                  <th></th>
+                                  <th></th>
+                                  <th><h1>Admin panel</h1></th>
+                                  <th></th>
+                                  <th></th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr>
+                                  <td>
+                                      <Link to={`/admin/authors`} style={{ textDecoration: "none" }}>
+                                          Authors
+                                      </Link>
+                                  </td>
+                                  <td>
+                                      <Link to={`/admin/books`} style={{ textDecoration: "none" }}>
+                                          Books
+                                      </Link>
+                                  </td>
+                                  <td>
+                                      <Link to={`/admin/bookTypes`} style={{ textDecoration: "none" }}>
+                                          Book types
+                                      </Link>
+                                  </td>
+                                  <td>
+                                      <Link to={`/admin/orders`} style={{ textDecoration: "none" }}>
+                                          Orders
+                                      </Link>
+                                  </td>
+                                  <td>
+                                      <Link to={`/admin/publishingHouses`} style={{ textDecoration: "none" }}>
+                                          Publishing houses
+                                      </Link>
+                                  </td>
+                                  <td>
+                                      <Link to={`/admin/users`} style={{ textDecoration: "none" }}>
+                                          Users
+                                      </Link>
+                                  </td>
+                              </tr>
+                              </tbody>
+                          </Table>
+                      </Wrapper>
+                  </Paper>
+              </PageWrapper>
+          )
+      }
+      else
+      {
+          return (<PageWrapper>
+              <Paper>
+                  <Wrapper>
+                      <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
+                  </Wrapper>
+              </Paper>
+          </PageWrapper>)
+      }
   }
 };
 

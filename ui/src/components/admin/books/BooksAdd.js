@@ -33,29 +33,33 @@ class BooksAdd extends Component {
     }
 
     componentDidMount() {
-        axios.all([axios.get("http://localhost:9000/api/bookTypes"),
-            axios.get("http://localhost:9000/api/authors"),
-            axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((bookTypes, authors, publishingHouses) => {
-            this.setState({
-                bookTypes: bookTypes.data,
-                authors: authors.data,
-                publishingHouses: publishingHouses.data
-            })
-        }));
+        if(window.token !== undefined) {
+            axios.all([axios.get("http://localhost:9000/api/bookTypes"),
+                axios.get("http://localhost:9000/api/authors"),
+                axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((bookTypes, authors, publishingHouses) => {
+                this.setState({
+                    bookTypes: bookTypes.data,
+                    authors: authors.data,
+                    publishingHouses: publishingHouses.data
+                })
+            }));
+        }
     }
 
     addBook = () => {
-        const book = {
-            title: this.state.title,
-            author: this.state.author,
-            publishingHouse: this.state.publishingHouse,
-            publishYear: this.state.publishYear,
-            description: this.state.description,
-            price: this.state.price,
-            bookType: this.state.bookType
-        };
-        console.log(book);
-        axios.put("http://localhost:9000/api/book", {book}).then(this.props.history.push(`/admin/books`));
+        if(window.token) {
+            const book = {
+                title: this.state.title,
+                author: this.state.author,
+                publishingHouse: this.state.publishingHouse,
+                publishYear: this.state.publishYear,
+                description: this.state.description,
+                price: this.state.price,
+                bookType: this.state.bookType
+            };
+
+            axios.put("http://localhost:9000/api/book", {book}).then(this.props.history.push(`/admin/books`));
+        }
     };
 
     setTitleState = event => {

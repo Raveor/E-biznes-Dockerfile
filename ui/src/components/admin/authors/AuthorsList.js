@@ -53,11 +53,13 @@ class AuthorsList extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/authors", {'headers': {'X-Auth-Token': window.token}}).then(data => {
-            this.setState({
-                authors : data.data
+        if(window.token !== undefined) {
+            axios.get("http://localhost:9000/api/authors", {'headers': {'X-Auth-Token': window.token}}).then(data => {
+                this.setState({
+                    authors : data.data
+                });
             });
-        });
+        }
     }
 
      handleClickOpen(id) {
@@ -74,16 +76,18 @@ class AuthorsList extends Component {
     }
 
     handleAgree() {
-        this.setState({
-            open: false
-        });
-
-        axios.delete("http://localhost:9000/api/author/" + this.state.deleteId, {'headers': {'X-Auth-Token': window.token}})
-            .then(data => {
-                alert("Usunieto autora!");
-                this.setState({deleteId: null});
-                this.componentDidMount();
+        if(window.token !== undefined) {
+            this.setState({
+                open: false
             });
+
+            axios.delete("http://localhost:9000/api/author/" + this.state.deleteId, {'headers': {'X-Auth-Token': window.token}})
+                .then(data => {
+                    alert("Usunieto autora!");
+                    this.setState({deleteId: null});
+                    this.componentDidMount();
+                });
+        }
     }
 
     render() {

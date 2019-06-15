@@ -24,11 +24,13 @@ class BookTypesAdd extends Component {
     }
 
     addAuthor = () => {
-        const bookType = {
-            name: this.state.name
-        };
+        if(window.token !== undefined) {
+            const bookType = {
+                name: this.state.name
+            };
 
-        axios.put("http://localhost:9000/api/bookType", {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+            axios.put("http://localhost:9000/api/bookType", {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+        }
     };
 
 

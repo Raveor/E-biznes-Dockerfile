@@ -55,18 +55,20 @@ class BooksList extends Component {
     }
 
     componentDidMount() {
-        axios.all([axios.get("http://localhost:9000/api/books"),
-            axios.get("http://localhost:9000/api/bookTypes"),
-            axios.get("http://localhost:9000/api/authors"),
-            axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((books, bookTypes, authors, publishingHouses) => {
+        if(window.token !== undefined) {
+            axios.all([axios.get("http://localhost:9000/api/books"),
+                axios.get("http://localhost:9000/api/bookTypes"),
+                axios.get("http://localhost:9000/api/authors"),
+                axios.get("http://localhost:9000/api/publishingHouses")]).then(axios.spread((books, bookTypes, authors, publishingHouses) => {
                 console.log(books);
-            this.setState({
-                books: books.data,
-                bookTypes: bookTypes.data,
-                authors: authors.data,
-                publishingHouses: publishingHouses.data
-            })
-        }));
+                this.setState({
+                    books: books.data,
+                    bookTypes: bookTypes.data,
+                    authors: authors.data,
+                    publishingHouses: publishingHouses.data
+                })
+            }));
+        }
     }
 
      handleClickOpen(id) {
@@ -83,16 +85,18 @@ class BooksList extends Component {
     }
 
     handleAgree() {
-        this.setState({
-            open: false
-        });
-
-        axios.delete("http://localhost:9000/api/book/" + this.state.deleteId)
-            .then(data => {
-                alert("Usunieto autora!");
-                this.setState({deleteId: null});
-                this.componentDidMount();
+        if(window.token !== undefined){
+            this.setState({
+                open: false
             });
+
+            axios.delete("http://localhost:9000/api/book/" + this.state.deleteId)
+                .then(data => {
+                    alert("Usunieto książkę!");
+                    this.setState({deleteId: null});
+                    this.componentDidMount();
+                });
+        }
     }
 
     render() {

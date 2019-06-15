@@ -24,19 +24,23 @@ class BookTypesEdit extends Component {
     }
 
     editAuthor = () => {
-        const bookType = {
-            name: this.state.name,
-        };
+        if(window.token !== undefined) {
+            const bookType = {
+                name: this.state.name,
+            };
 
-        axios.patch("http://localhost:9000/api/bookType/" + this.props.match.params.id, {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+            axios.patch("http://localhost:9000/api/bookType/" + this.props.match.params.id, {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+        }
     };
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/bookType/" + this.props.match.params.id).then(data => {
-            this.setState({
-                name: data.data[0].name,
+        if(window.token !== undefined) {
+            axios.get("http://localhost:9000/api/bookType/" + this.props.match.params.id).then(data => {
+                this.setState({
+                    name: data.data[0].name
+                })
             })
-        })
+        }
     }
 
     setNameState = event => {

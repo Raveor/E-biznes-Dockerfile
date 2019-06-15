@@ -25,12 +25,16 @@ class AuthorAdd extends Component {
     }
 
     addAuthor = () => {
-        const author = {
-            name: this.state.name,
-            surname: this.state.surname
-        };
+        if(window.token !== undefined)
+        {
+            const author = {
+                name: this.state.name,
+                surname: this.state.surname
+            };
 
-        axios.put("http://localhost:9000/api/author", {'headers': {'X-Auth-Token': window.token}, body: author}).then(this.props.history.push(`/admin/authors`));
+            axios.put("http://localhost:9000/api/author", {'headers': {'X-Auth-Token': window.token}, body: author}).then(this.props.history.push(`/admin/authors`));
+
+        }
     };
 
     setSurnameState = event => {

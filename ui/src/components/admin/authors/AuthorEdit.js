@@ -25,23 +25,25 @@ class AuthorEdit extends Component {
     }
 
     editAuthor = () => {
-        const author = {
-            name: this.state.name,
-            surname: this.state.surname
-        };
+        if(window.token !== undefined) {
+            const author = {
+                name: this.state.name,
+                surname: this.state.surname
+            };
 
-        console.log(author);
-
-        axios.patch("http://localhost:9000/api/author/" + this.props.match.params.id, {author}).then(this.props.history.push(`/admin/authors`));
+            axios.patch("http://localhost:9000/api/author/" + this.props.match.params.id, {author}).then(this.props.history.push(`/admin/authors`));
+        }
     };
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/author/" + this.props.match.params.id).then(data => {
-            this.setState({
-                name: data.data[0].name,
-                surname: data.data[0].surname
+        if(window.token !== undefined) {
+            axios.get("http://localhost:9000/api/author/" + this.props.match.params.id).then(data => {
+                this.setState({
+                    name: data.data[0].name,
+                    surname: data.data[0].surname
+                })
             })
-        })
+        }
     }
 
     setSurnameState = event => {
