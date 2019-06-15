@@ -13,7 +13,7 @@ class ClientRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
   import dbConfig._
   import profile.api._
 
-  class ClientTable(tag: Tag) extends Table[Client](tag, "t_clients") {
+  class ClientTable(tag: Tag) extends Table[Client](tag, "t_users") {
     def id = column[Int]("client_id", O.PrimaryKey, O.AutoInc)
 
     def username = column[String]("username")
@@ -42,10 +42,10 @@ class ClientRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
   }
 
   def getByProvider(provider: String, id: String): Future[Seq[Client]] = db.run {
-    if(provider == "facebook") {
-      client.filter(_.facebook_id === id ).result
+    if (provider == "facebook") {
+      client.filter(_.facebook_id === id).result
     } else {
-      client.filter(_.twitter_id === id ).result
+      client.filter(_.twitter_id === id).result
     }
   }
 

@@ -14,16 +14,16 @@ import utils.auth.DefaultEnv
 import scala.concurrent.{ ExecutionContext, Future }
 
 class SocialAuthController @Inject() (
-                                       components: ControllerComponents,
-                                       silhouette: Silhouette[DefaultEnv],
-                                       userService: UserService,
-                                       authInfoRepository: AuthInfoRepository,
-                                       socialProviderRegistry: SocialProviderRegistry,
-                                       clientRepository: ClientRepository
-                                     )(
-                                       implicit
-                                       ex: ExecutionContext
-                                     ) extends AbstractController(components) with I18nSupport with Logger {
+  components: ControllerComponents,
+  silhouette: Silhouette[DefaultEnv],
+  userService: UserService,
+  authInfoRepository: AuthInfoRepository,
+  socialProviderRegistry: SocialProviderRegistry,
+  clientRepository: ClientRepository
+)(
+  implicit
+  ex: ExecutionContext
+) extends AbstractController(components) with I18nSupport with Logger {
 
   def authenticate(provider: String) = Action.async { implicit request: Request[AnyContent] =>
     (socialProviderRegistry.get[SocialProvider](provider) match {
@@ -35,18 +35,18 @@ class SocialAuthController @Inject() (
               for {
                 profile <- p.retrieveProfile(authInfo)
                 user <- {
-                    clientRepository
-                      .getByProvider(profile.loginInfo.providerID, profile.loginInfo.providerKey)
-                      .map(
-                        clients =>
-                          if (clients.isEmpty) {
-                            if(profile.loginInfo.providerID == "facebook") {
-                              clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, null, profile.loginInfo.providerKey, false)
-                            } else {
-                              clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, profile.loginInfo.providerKey, null, false)
-                            }
+                  clientRepository
+                    .getByProvider(profile.loginInfo.providerID, profile.loginInfo.providerKey)
+                    .map(
+                      clients =>
+                        if (clients.isEmpty) {
+                          if (profile.loginInfo.providerID == "facebook") {
+                            clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, null, profile.loginInfo.providerKey, false)
+                          } else {
+                            clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, profile.loginInfo.providerKey, null, false)
                           }
-                      )
+                        }
+                    )
                   userService.save(profile)
                 }
                 authInfo <- authInfoRepository.save(profile.loginInfo, authInfo)

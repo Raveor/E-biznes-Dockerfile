@@ -46,7 +46,18 @@ class Banner extends Component {
     if (isWidthDown('sm', this.props.width)) {
       menu = <BannerHamburger productLink={productLink} number={number} />
     } else {
-      menu = (<span className={classes.buttons}>
+      if(window.token === undefined)
+      {
+        menu = (<span className={classes.buttons}>
+          { productLink }
+          <Link to={`/login`} className={classes.menuButton} style={{ marginRight: 10 }}>
+            <Typography variant="button" gutterBottom>Login</Typography>
+          </Link>
+        </span>)
+      }
+      else
+      {
+          menu = (<span className={classes.buttons}>
           { productLink }
           <Link to={`/cart`} className={classes.menuButton} style={{ marginRight: 10 }}>
             <Typography variant="button" gutterBottom>Cart{number}</Typography>
@@ -54,19 +65,14 @@ class Banner extends Component {
           <Link to={`/admin`} className={classes.menuButton} style={{ marginRight: 10 }}>
             <Typography variant="button" gutterBottom>Admin panel</Typography>
           </Link>
-          <Link to={`/login`} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>Login</Typography>
-          </Link>
           <Link  to={`/orders`} className={classes.menuButton} style={{ marginRight: 10 }}>
             <Typography variant="button" gutterBottom>My orders</Typography>
           </Link>
-          <Link  to={`/logout`} className={classes.menuButton} style={{ marginRight: 10 }}>
+          <Link to={'/'} onClick={() => {window.token=undefined}} className={classes.menuButton} style={{ marginRight: 10 }}>
             <Typography variant="button" gutterBottom>Logout</Typography>
           </Link>
-
-
-        </span>
-      )
+        </span>);
+      }
     }
 
     return (

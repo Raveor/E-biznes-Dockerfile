@@ -19,11 +19,9 @@ const Hero = styled.div`
 
 class Landing extends Component {
 
-  componentDidMount() {
-      if(this.props.match.params.token !== undefined) {
-          window.token = this.props.match.params.token;
-      }
-  }
+    componentDidMount() {
+        window.token = window.location.search.replace("?token=", "");
+    }
 
   render() {
     const { config } = this.props;

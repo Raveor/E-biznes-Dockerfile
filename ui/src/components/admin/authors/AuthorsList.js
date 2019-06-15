@@ -53,7 +53,7 @@ class AuthorsList extends Component {
     }
 
     componentDidMount() {
-        axios.get("http://localhost:9000/api/authors").then(data => {
+        axios.get("http://localhost:9000/api/authors", {'headers': {'X-Auth-Token': window.token}}).then(data => {
             this.setState({
                 authors : data.data
             });
@@ -78,7 +78,7 @@ class AuthorsList extends Component {
             open: false
         });
 
-        axios.delete("http://localhost:9000/api/author/" + this.state.deleteId)
+        axios.delete("http://localhost:9000/api/author/" + this.state.deleteId, {'headers': {'X-Auth-Token': window.token}})
             .then(data => {
                 alert("Usunieto autora!");
                 this.setState({deleteId: null});
@@ -104,7 +104,7 @@ class AuthorsList extends Component {
                             </tr>
                             </thead>
                             <tbody>
-                            { this.state.authors.map((author,i) => {
+                            {   this.state.authors.map((author,i) => {
                                 return (<tr key={`author${i}`}>
                                     <td>
                                         {author.id}

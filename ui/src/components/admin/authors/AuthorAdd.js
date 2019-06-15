@@ -30,7 +30,7 @@ class AuthorAdd extends Component {
             surname: this.state.surname
         };
 
-        axios.put("http://localhost:9000/api/author", {author}).then(this.props.history.push(`/admin/authors`));
+        axios.put("http://localhost:9000/api/author", {'headers': {'X-Auth-Token': window.token}, body: author}).then(this.props.history.push(`/admin/authors`));
     };
 
     setSurnameState = event => {

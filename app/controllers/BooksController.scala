@@ -1,17 +1,24 @@
 package controllers
 
 import akka.actor.ActorSystem
+import com.mohiva.play.silhouette.api.Silhouette
 import javax.inject._
 import models.BookRepository
+import org.webjars.play.WebJarsUtil
 import play.api.libs.json.{ JsObject, Json }
 import play.api.mvc._
+import utils.auth.DefaultEnv
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class BooksController @Inject() (cc: ControllerComponents, bookRepository: BookRepository, actorSystem: ActorSystem)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class BooksController @Inject() (cc: ControllerComponents, silhouette: Silhouette[DefaultEnv],
+  bookRepository: BookRepository, actorSystem: ActorSystem)(implicit
+  webJarsUtil: WebJarsUtil,
+  assets: AssetsFinder, exec: ExecutionContext
+) extends AbstractController(cc) {
 
-  def getAllBooks = Action.async { implicit request =>
+  def getAllBooks = silhouette.UnsecuredAction.async { implicit request =>
     bookRepository
       .list()
       .map { books =>
@@ -19,13 +26,13 @@ class BooksController @Inject() (cc: ControllerComponents, bookRepository: BookR
       }
   }
 
-  def getBookById(id: Integer) = Action.async { implicit request =>
+  def getBookById(id: Integer) = silhouette.UnsecuredAction.async { implicit request =>
     bookRepository
       .getById(id)
       .map(book => Ok(Json.toJson(book)))
   }
-  //id: Int, title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int
-  def addBook = Action.async { implicit request =>
+
+  def addBook = silhouette.SecuredAction.async { implicit request =>
     val body: JsObject = request.body.asJson.get("book").as[JsObject]
 
     bookRepository.insert(body.value("title").as[String], body.value("author").as[Int], body.value("publishingHouse").as[Int], body.value("publishYear").as[Int],
@@ -34,11 +41,11 @@ class BooksController @Inject() (cc: ControllerComponents, bookRepository: BookR
 
   }
 
-  def deleteBook(id: Integer) = Action.async {
+  def deleteBook(id: Integer) = silhouette.SecuredAction.async {
     bookRepository.delete(id).map(book => Ok(Json.toJson(book)))
   }
 
-  def editBook(id: Integer) = Action.async { implicit request =>
+  def editBook(id: Integer) = silhouette.SecuredAction.async { implicit request =>
     val body: JsObject = request.body.asJson.get("book").as[JsObject]
 
     bookRepository.edit(id, body.value("title").as[String], body.value("author").as[Int], body.value("publishingHouse").as[Int],

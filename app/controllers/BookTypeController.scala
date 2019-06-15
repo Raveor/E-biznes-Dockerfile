@@ -28,24 +28,24 @@ class BookTypeController @Inject() (cc: ControllerComponents, silhouette: Silhou
       }
   }
 
-  def getTypeById(id: Integer) = Action.async { implicit request =>
+  def getTypeById(id: Integer) = silhouette.UnsecuredAction.async { implicit request =>
     bookTypeRepository
       .getById(id)
       .map(t => Ok(Json.toJson(t)))
   }
 
-  def addType = Action.async { implicit request =>
+  def addType = silhouette.SecuredAction.async { implicit request =>
     val body: JsObject = request.body.asJson.get("bookType").as[JsObject]
 
     bookTypeRepository.insert(body.value("name").as[String])
       .map(bookType => Ok(Json.toJson(bookType)))
   }
 
-  def deleteType(id: Integer) = Action.async {
+  def deleteType(id: Integer) = silhouette.SecuredAction.async {
     bookTypeRepository.delete(id).map(bookType => Ok(Json.toJson(bookType)))
   }
 
-  def editType(id: Integer) = Action.async { implicit request =>
+  def editType(id: Integer) = silhouette.SecuredAction.async { implicit request =>
     val body: JsObject = request.body.asJson.get("bookType").as[JsObject]
 
     bookTypeRepository.edit(id, body.value("name").as[String])
