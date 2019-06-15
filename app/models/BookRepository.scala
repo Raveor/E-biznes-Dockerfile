@@ -59,8 +59,14 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
       .result
   }
 
+  def insert(title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int) : Future[Int] = db.run {
+    bookTable += Book(0, title, author, publishingHouse, publishYear, description, price, bookType)
+  }
+
+
   def edit(id: Int, title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int) : Future[Int] = db.run {
-    bookTable.filter(_.id === id).update(Book(id, title, author, publishingHouse, publishYear, description, price, bookType))
+    val book = Book(id, title, author, publishingHouse, publishYear, description, price, bookType)
+    bookTable.filter(_.id === id).update(book)
   }
 
   def delete(id: Int) : Future[Int] = db.run {

@@ -45,14 +45,28 @@ class Product extends Component {
     this.state = {
       quantity: 0,
       productId: props.match.params.id,
-      product: {id: 0, title: ""}
+      product: {id: 0, title: ""},
+        bookType: "",
+        author: {surname: "", name: ""},
+        publishingHouse: ""
     };
     }
 
   componentDidMount() {
   axios.get("http://localhost:9000/api/book/" + this.state.productId)
       .then(product => {
-        this.setState({
+          axios.all([axios.get("http://localhost:9000/api/bookType/" + product.data[0].bookType),
+              axios.get("http://localhost:9000/api/author/" + product.data[0].author),
+              axios.get("http://localhost:9000/api/publishingHouse/" + product.data[0].publishingHouse)]).then(axios.spread((bookTypes, authors, publishingHouses) => {
+              this.setState({
+                  bookType: bookTypes.data[0].name,
+                  author: {surname: authors.data[0].surname,
+                  name: authors.data[0].name},
+                  publishingHouse: publishingHouses.data[0].name
+              })
+          }));
+
+          this.setState({
            product: product.data[0]
         });
       }).catch(error => console.error('Error:', error));
@@ -60,7 +74,6 @@ class Product extends Component {
 
     addToCart = (state) => {
     const product  = this.state.product;
-    let attr = {};
 
     const slug = `${config.store_slug}_products`;
     let products = JSON.parse(localStorage.getItem(slug));
@@ -86,10 +99,13 @@ class Product extends Component {
           <Wrapper>
             <Breadcrumb product={this.state.product} />
             <Grid>
-              <LargeIMG img={'.'}/>
+              <LargeIMG img={'./../placeholder.png'}/>
               <div style={{ gridColumn: "span 2" }}>
                 <ProductDetails
                   product={this.state.product}
+                  author={this.state.author}
+                  bookType={this.state.bookType}
+                  publishingHouse={this.state.publishingHouse}
                   quantity={this.state.quantity}
                   price={this.state.price}
                   addToCart={this.addToCart}

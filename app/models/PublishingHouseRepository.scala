@@ -22,28 +22,29 @@ class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvid
     def * = (id, name) <> ((PublishingHouse.apply _).tupled, PublishingHouse.unapply)
   }
 
-  val publishingHouse = TableQuery[PublishingHouseTable]
+  val publishingHouseTable = TableQuery[PublishingHouseTable]
 
   def list(): Future[Seq[PublishingHouse]] = db.run {
-    publishingHouse.result
+    publishingHouseTable.result
   }
 
   def getById(id: Int): Future[Seq[PublishingHouse]] = db.run {
-    publishingHouse
+    publishingHouseTable
       .filter(_.id === id)
       .result
   }
 
   def insert(name: String): Future[Int] = db.run {
-    publishingHouse += PublishingHouse(0, name)
+    publishingHouseTable += PublishingHouse(0, name)
   }
 
   def edit(id: Int, name:String) : Future[Int] = db.run {
-    publishingHouse.filter(_.id === id).update(PublishingHouse(id, name))
+    val publishingHouse = PublishingHouse(id, name)
+    publishingHouseTable.filter(_.id === id).update(publishingHouse)
   }
 
   def delete(id: Int) : Future[Int] = db.run {
-    publishingHouse.filter(_.id === id).delete
+    publishingHouseTable.filter(_.id === id).delete
   }
 
 }

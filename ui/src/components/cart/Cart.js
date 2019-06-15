@@ -32,7 +32,7 @@ const Subtotal = styled.div`
 
 class Cart extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       items: [],
       total: 0,
@@ -45,22 +45,26 @@ class Cart extends Component {
       items : items ? items : []
     })
   }
+
   updateItems = (items) => {
     this.setState({ items });
     const slug = `${config.store_slug}_products`;
     localStorage.setItem(slug, JSON.stringify(items));
   }
+
   removeItem = (index) => {
     let items = [...this.state.items];
     items.splice(index,1);
     this.props.updateNumber(items.length)
     this.updateItems(items);
   }
+
   updateCount = (index, value) => {
     let items = [...this.state.items]
     items[index].quantity = value
     this.updateItems(items);
   }
+
   render() {
     let totalPrice;
     if (this.state.items.length) {

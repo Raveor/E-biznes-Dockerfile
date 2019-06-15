@@ -23,28 +23,29 @@ class BookTypeRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(imp
 
   }
 
-  val bookType = TableQuery[BookTypeTable]
+  val bookTypeTable = TableQuery[BookTypeTable]
 
   def list(): Future[Seq[BookType]] = db.run {
-    bookType.result
+    bookTypeTable.result
   }
 
   def getById(id: Int): Future[Seq[BookType]] = db.run {
-    bookType
+    bookTypeTable
       .filter(_.id === id)
       .result
   }
 
   def insert(name: String): Future[Int] = db.run {
-    bookType += BookType(0, name)
+    bookTypeTable += BookType(0, name)
   }
 
   def edit(id: Int, name:String) : Future[Int] = db.run {
-    bookType.filter(_.id === id).update(BookType(id, name))
+    val bookType = BookType(id,name)
+    bookTypeTable.filter(_.id === id).update(bookType)
   }
 
   def delete(id: Int) : Future[Int] = db.run {
-    bookType.filter(_.id === id).delete
+    bookTypeTable.filter(_.id === id).delete
   }
 
 }

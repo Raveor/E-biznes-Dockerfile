@@ -33,12 +33,16 @@ class AuthorController @Inject()(cc: MessagesControllerComponents, authorReposit
       .map(author => Ok(Json.toJson(author)))
   }
 
-  def deleteAuthor(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def deleteAuthor(id: Integer) = Action.async {
+    authorRepository.delete(id).map(authors => Ok(Json.toJson(authors)))
   }
 
-  def editAuthor(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def editAuthor(id: Integer) = Action.async { implicit request =>
+    val body : JsObject = request.body.asJson.get("author").as[JsObject]
+
+    authorRepository.edit(id, body.value("name").as[String], body.value("surname").as[String])
+      .map(author => Ok(Json.toJson(author)))
   }
+
 
 }

@@ -7,7 +7,7 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val clientRepository: ClientRepository)
+class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val clientRepository: UserRepository)
                                (implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 

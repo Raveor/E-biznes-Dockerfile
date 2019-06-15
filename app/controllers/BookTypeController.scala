@@ -30,15 +30,17 @@ class BookTypeController @Inject()(cc: ControllerComponents, bookTypeRepository:
     val body : JsObject = request.body.asJson.get("bookType").as[JsObject]
 
     bookTypeRepository.insert(body.value("name").as[String])
-      .map(author => Ok(Json.toJson(author)))
+      .map(bookType => Ok(Json.toJson(bookType)))
   }
 
-  def deleteType(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def deleteType(id: Integer) = Action.async {
+    bookTypeRepository.delete(id).map(bookType => Ok(Json.toJson(bookType)))
   }
 
-  def editType(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
-  }
+  def editType(id: Integer) = Action.async { implicit request =>
+    val body : JsObject = request.body.asJson.get("bookType").as[JsObject]
 
+    bookTypeRepository.edit(id, body.value("name").as[String])
+      .map(bookType => Ok(Json.toJson(bookType)))
+  }
 }

@@ -86,7 +86,7 @@ class CartTable extends Component {
             return (<tr key={`cart${i}`}>
               <td>
                 <Flex>
-                  <Image img={d.img} />
+                  <Image img={'./../placeholder.png'} />
                   <Title>
                     <Name underline={this.props.theme.palette.primary.main}>
                       <Link to={d.url ? d.url : "/"}>{d.name}</Link>

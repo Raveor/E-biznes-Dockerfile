@@ -74,7 +74,7 @@ class ProductList extends Component {
         { books.map((product,i) => {
           return <Link key={i} to={`/product/${product.id}`}>
             <ImgWrapper borderColor={this.props.theme.palette.secondary.main}>
-              <LargeIMG img={`../photos`}/>
+              <LargeIMG img={`'./../placeholder.png'`}/>
             </ImgWrapper>
             <Title>
               {product.title}

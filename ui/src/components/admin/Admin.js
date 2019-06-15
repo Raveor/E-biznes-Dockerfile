@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 import PageWrapper from '../ui/PageWrapper';
 import Paper from '@material-ui/core/Paper';
@@ -31,15 +32,7 @@ const Wrapper = styled.div`
 `;
 
 class Admin extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {
-  }
-
   render() {
-
     return (
         <PageWrapper>
             <Paper>
@@ -47,42 +40,52 @@ class Admin extends Component {
                     <Table>
                         <thead>
                         <tr>
-                          <td>Admin panel</td>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><h1>Admin panel</h1></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                          <td>
-                            Author list
-                          </td>
-                        </tr>
-                            <tr>
-                                <td>
-                                    Books list
-                                </td>
-                            </tr>
-                          <tr>
                             <td>
-                                Book types list
+                                <Link to={`/admin/authors`} style={{ textDecoration: "none" }}>
+                                    Authors
+                                </Link>
+                            </td>
+                            <td>
+                                <Link to={`/admin/books`} style={{ textDecoration: "none" }}>
+                                    Books
+                                </Link>
+                            </td>
+                            <td>
+                                <Link to={`/admin/bookTypes`} style={{ textDecoration: "none" }}>
+                                    Book types
+                                </Link>
+                            </td>
+                            <td>
+                                <Link to={`/admin/orders`} style={{ textDecoration: "none" }}>
+                                    Orders
+                                </Link>
+                            </td>
+                            <td>
+                                <Link to={`/admin/publishingHouses`} style={{ textDecoration: "none" }}>
+                                    Publishing houses
+                                </Link>
+                            </td>
+                            <td>
+                                <Link to={`/admin/users`} style={{ textDecoration: "none" }}>
+                                    Users
+                                </Link>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                Publishing houses list
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Orders list
-                            </td>
-                        </tr>
-
                         </tbody>
                     </Table>
                 </Wrapper>
             </Paper>
         </PageWrapper>
-
     )
   }
 };

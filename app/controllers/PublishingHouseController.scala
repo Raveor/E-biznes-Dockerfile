@@ -32,12 +32,14 @@ class PublishingHouseController @Inject()(cc: ControllerComponents, actorSystem:
       .map(author => Ok(Json.toJson(author)))
 }
 
-  def deletePublishingHouse(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def deletePublishingHouse(id: Integer) = Action.async {
+    publishingHouseRepository.delete(id).map(publishingHouse => Ok(Json.toJson(publishingHouse)))
   }
 
-  def editPublishingHouse(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
-  }
+  def editPublishingHouse(id: Integer) = Action.async { implicit request =>
+    val body : JsObject = request.body.asJson.get("publishingHouse").as[JsObject]
 
+    publishingHouseRepository.edit(id, body.value("name").as[String])
+      .map(author => Ok(Json.toJson(author)))
+  }
 }

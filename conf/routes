@@ -47,10 +47,17 @@ PUT     /api/order                      controllers.OrdersController.addOrder
 DELETE  /api/order/:id                  controllers.OrdersController.deleteOrder(id: Integer)
 PATCH   /api/order/:id                  controllers.OrdersController.editOrder(id: Integer)
 
+# book types routes
+GET     /api/bookTypes                  controllers.BookTypeController.getAllTypes
+GET     /api/bookType/:id               controllers.BookTypeController.getTypeById(id: Integer)
+PUT     /api/bookType                   controllers.BookTypeController.addType
+DELETE  /api/bookType/:id               controllers.BookTypeController.deleteType(id: Integer)
+PATCH   /api/bookType/:id               controllers.BookTypeController.editType(id: Integer)
+
 # clients routes
-GET     /api/clients                    controllers.ClientController.getAllClients
-GET     /api/client/:id                 controllers.ClientController.getClientById(id: Integer)
-PATCH   /api/client/:id                 controllers.ClientController.editClient(id: Integer)
+GET     /api/clients                    controllers.UserController.getAllUsers
+GET     /api/client/:id                 controllers.UserController.getUserById(id: Integer)
+PATCH   /api/client/:id                 controllers.UserController.editUser(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file                          controllers.FrontendController.assetOrDefault(file)

@@ -7,8 +7,8 @@ import Divider from '@material-ui/core/Divider';
 import ProductList from './product/ProductList';
 
 const Hero = styled.div`
+  background-image: url(${props => props.img});
   height: 300px;
-  background: #aaa;
   color: white;
   font-size: 20px;
   display: flex;
@@ -24,9 +24,8 @@ class Landing extends Component {
     return (
       <PageWrapper>
         <Paper style={{ padding: "40px" }}>
-          <Hero>
+          <Hero img={'./../bookstore.jpg'}>
             <div style={{ display: "inline-block", maxWidth: "80%"}}>
-              <p>intro your site here!</p>
             </div>
           </Hero>
           <Divider style={{ margin: "40px 0" }}/>

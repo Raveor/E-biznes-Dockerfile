@@ -24,27 +24,28 @@ class AuthorRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(impli
     def * = (id, surname, name) <> ((Author.apply _).tupled, Author.unapply)
   }
 
-  val author = TableQuery[AuthorTable]
+  val authorTable = TableQuery[AuthorTable]
 
   def list(): Future[Seq[Author]] = db.run {
-    author.result
+    authorTable.result
   }
 
   def getById(id: Int): Future[Seq[Author]] = db.run {
-    author
+    authorTable
       .filter(_.id === id)
       .result
   }
 
   def insert(name: String, surname: String) : Future[Int] = db.run{
-    author += Author(0, surname, name)
+    authorTable += Author(0, surname, name)
   }
 
-  def edit(id: Int, surname: String, name:String) : Future[Int] = db.run {
-    author.filter(_.id === id).update(Author(id, surname, name))
+  def edit(id: Int, name: String, surname:String) : Future[Int] = db.run {
+    val author = Author(id, surname, name)
+    authorTable.filter(_.id === id).update(author)
   }
 
   def delete(id: Int) : Future[Int] = db.run {
-    author.filter(_.id === id).delete
+    authorTable.filter(_.id === id).delete
   }
 }

@@ -28,11 +28,15 @@ class ProductDetails extends Component {
 
   render() {
     const { product } = this.props;
-    console.log(product);
+    console.log(this.props);
     return (
       <div>
-        <h2 style={{ marginTop: "0" }}>{product.name}</h2>
-        <Description>{product.description}</Description>
+        <h2 style={{ marginTop: "0" }}>{product.title}</h2>
+          <h3 style={{ marginTop: "0" }}>{`${this.props.author.surname} ${this.props.author.name}`}</h3>
+          <h3 style={{ marginTop: "0" }}>{this.props.bookType}</h3>
+          <h3 style={{ marginTop: "0" }}>{this.props.publishingHouse}</h3>
+
+          <Description>{product.description}</Description>
         <div style={{ fontWeight: "600", textAlign: "right" }}>
           {product.price} PLN
         </div>
