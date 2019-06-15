@@ -1,14 +1,13 @@
 package models
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val clientRepository: UserRepository)
-                               (implicit ec: ExecutionContext) {
+class OrderRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, val clientRepository: ClientRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
@@ -36,11 +35,11 @@ class OrderRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, va
       .result
   }
 
-  def edit(id: Int, client_id: Int) : Future[Int] = db.run {
+  def edit(id: Int, client_id: Int): Future[Int] = db.run {
     order.filter(_.id === id).update(Order(id, client_id))
   }
 
-  def delete(id: Int) : Future[Int] = db.run {
+  def delete(id: Int): Future[Int] = db.run {
     order.filter(_.id === id).delete
   }
 

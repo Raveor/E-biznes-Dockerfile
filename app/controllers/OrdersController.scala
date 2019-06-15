@@ -8,10 +8,8 @@ import play.api.mvc._
 
 import scala.concurrent.ExecutionContext
 
-
 @Singleton
-class OrdersController @Inject()(cc: ControllerComponents, actorSystem: ActorSystem, orderRepository: OrderRepository)
-                                (implicit exec: ExecutionContext) extends AbstractController(cc) {
+class OrdersController @Inject() (cc: ControllerComponents, actorSystem: ActorSystem, orderRepository: OrderRepository)(implicit exec: ExecutionContext) extends AbstractController(cc) {
   def getAllOrders = Action.async { implicit request =>
     orderRepository
       .list()

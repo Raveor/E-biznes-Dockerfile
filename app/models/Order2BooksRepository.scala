@@ -1,14 +1,14 @@
 package models
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class Order2BooksRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val orderRepository: OrderRepository,
-                                      val bookRepository: BookRepository)(implicit ec: ExecutionContext) {
+class Order2BooksRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, val orderRepository: OrderRepository,
+  val bookRepository: BookRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import orderRepository.OrderTable
@@ -42,12 +42,11 @@ class Order2BooksRepository @Inject()(val dbConfigProvider: DatabaseConfigProvid
       .result
   }
 
-  def delete(order_id: Int, book_id: Int) : Future[Int] = db.run {
+  def delete(order_id: Int, book_id: Int): Future[Int] = db.run {
     order2Books
       .filter(_.book_id === book_id)
       .filter(_.order_id === order_id)
       .delete
   }
-
 
 }

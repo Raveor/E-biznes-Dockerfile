@@ -18,7 +18,13 @@ const Hero = styled.div`
 `;
 
 class Landing extends Component {
-  
+
+  componentDidMount() {
+      if(this.props.match.params.token !== undefined) {
+          window.token = this.props.match.params.token;
+      }
+  }
+
   render() {
     const { config } = this.props;
     return (

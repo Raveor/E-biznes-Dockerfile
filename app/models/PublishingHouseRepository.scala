@@ -1,13 +1,13 @@
 package models
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class PublishingHouseRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -38,12 +38,12 @@ class PublishingHouseRepository @Inject()(dbConfigProvider: DatabaseConfigProvid
     publishingHouseTable += PublishingHouse(0, name)
   }
 
-  def edit(id: Int, name:String) : Future[Int] = db.run {
+  def edit(id: Int, name: String): Future[Int] = db.run {
     val publishingHouse = PublishingHouse(id, name)
     publishingHouseTable.filter(_.id === id).update(publishingHouse)
   }
 
-  def delete(id: Int) : Future[Int] = db.run {
+  def delete(id: Int): Future[Int] = db.run {
     publishingHouseTable.filter(_.id === id).delete
   }
 

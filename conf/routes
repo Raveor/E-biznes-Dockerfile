@@ -5,6 +5,7 @@
 
 # An example controller showing a sample home page
 GET     /                               controllers.FrontendController.index
+#GET           /authenticate/:provider                      controllers.SocialAuthController.authenticate(provider)
 
 # auth
 POST    /api/auth/login                 controllers.AuthController.login
@@ -55,19 +56,10 @@ DELETE  /api/bookType/:id               controllers.BookTypeController.deleteTyp
 PATCH   /api/bookType/:id               controllers.BookTypeController.editType(id: Integer)
 
 # clients routes
-GET     /api/clients                    controllers.UserController.getAllUsers
-GET     /api/client/:id                 controllers.UserController.getUserById(id: Integer)
-PATCH   /api/client/:id                 controllers.UserController.editUser(id: Integer)
-
-GET         /password/forgot                 controllers.ForgotPasswordController.view
-POST        /password/forgot                 controllers.ForgotPasswordController.submit
-GET         /password/reset/:token           controllers.ResetPasswordController.view(token: java.util.UUID)
-POST        /password/reset/:token           controllers.ResetPasswordController.submit(token: java.util.UUID)
-GET         /password/change                 controllers.ChangePasswordController.view
-POST        /password/change                 controllers.ChangePasswordController.submit
-
-GET         /account/email/:email            controllers.ActivateAccountController.send(email: String)
-GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
+GET     /api/clients                    controllers.ClientController.getAllUsers
+GET     /api/client/:id                 controllers.ClientController.getUserById(id: Integer)
+PATCH   /api/client/:id                 controllers.ClientController.editUser(id: Integer)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file                          controllers.FrontendController.assetOrDefault(file)
+->      /webjars                        webjars.Routes

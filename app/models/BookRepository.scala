@@ -1,20 +1,19 @@
 package models
 
-import javax.inject.{Inject, Singleton}
+import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val authorRepository: AuthorRepository,
-                               val publishingHouseRepository: PublishingHouseRepository,
-                               val bookTypeRepository: BookTypeRepository)(implicit ec: ExecutionContext) {
+class BookRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, val authorRepository: AuthorRepository,
+  val publishingHouseRepository: PublishingHouseRepository,
+  val bookTypeRepository: BookTypeRepository)(implicit ec: ExecutionContext) {
   val dbConfig = dbConfigProvider.get[JdbcProfile]
 
   import dbConfig._
   import profile.api._
-
 
   class BookTable(tag: Tag) extends Table[Book](tag, "t_books") {
     def id = column[Int]("book_id", O.PrimaryKey, O.AutoInc)
@@ -59,17 +58,16 @@ class BookRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider, val
       .result
   }
 
-  def insert(title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int) : Future[Int] = db.run {
+  def insert(title: String, author: Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType: Int): Future[Int] = db.run {
     bookTable += Book(0, title, author, publishingHouse, publishYear, description, price, bookType)
   }
 
-
-  def edit(id: Int, title: String, author:Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType : Int) : Future[Int] = db.run {
+  def edit(id: Int, title: String, author: Int, publishingHouse: Int, publishYear: Int, description: String, price: Float, bookType: Int): Future[Int] = db.run {
     val book = Book(id, title, author, publishingHouse, publishYear, description, price, bookType)
     bookTable.filter(_.id === id).update(book)
   }
 
-  def delete(id: Int) : Future[Int] = db.run {
+  def delete(id: Int): Future[Int] = db.run {
     bookTable.filter(_.id === id).delete
   }
 
