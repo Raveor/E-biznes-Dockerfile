@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { withTheme } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
+import {withTheme} from '@material-ui/core/styles';
 import axios from 'axios';
+
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -52,38 +53,40 @@ const Price = styled.span`
 `;
 
 class ProductList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      books: []
+    constructor(props) {
+        super(props);
+        this.state = {
+            books: []
+        }
     }
-  }
-  componentDidMount() {
-    axios.get('http://localhost:9000/api/books')
-    .then( value => {
-        this.setState({
-              books: value.data
-          });
-        console.log(value.data);
-    }).catch(error => console.error('Error:', error))
-  }
-  render() {
-    const { books } = this.state;
-    return (
-      <Wrapper>
-        { books.map((product,i) => {
-          return <Link key={i} to={`/product/${product.id}`}>
-            <ImgWrapper borderColor={this.props.theme.palette.secondary.main}>
-              <LargeIMG img={`'./../placeholder.png'`}/>
-            </ImgWrapper>
-            <Title>
-              {product.title}
-              <Price>${product.price}</Price>
-            </Title>
-          </Link>
-        })}
-      </Wrapper>
-    );
-  }
+
+    componentDidMount() {
+        axios.get('http://localhost:9000/api/books')
+            .then(value => {
+                this.setState({
+                    books: value.data
+                });
+                console.log(value.data);
+            }).catch(error => console.error('Error:', error))
+    }
+
+    render() {
+        const {books} = this.state;
+        return (
+            <Wrapper>
+                {books.map((product, i) => {
+                    return <Link key={i} to={`/product/${product.id}`}>
+                        <ImgWrapper borderColor={this.props.theme.palette.secondary.main}>
+                            <LargeIMG img={`'./../placeholder.png'`}/>
+                        </ImgWrapper>
+                        <Title>
+                            {product.title}
+                            <Price>{product.price} zł</Price>
+                        </Title>
+                    </Link>
+                })}
+            </Wrapper>
+        );
+    }
 };
 export default withTheme()(ProductList);

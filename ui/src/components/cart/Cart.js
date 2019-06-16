@@ -71,13 +71,22 @@ class Cart extends Component {
       totalPrice = this.state.items
         .map(i => (i.quantity*i.price))
         .reduce((a,b) => a+Number(b))
-        .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+        .toLocaleString('pl-PL', { style: 'currency', currency: 'PLN' })
+    }
+    let checkout;
+    if(window.token !== undefined) {
+          checkout = (   <Link to={`/checkout`} style={{ textDecoration: "none" }}>
+                  <Button variant="raised" color="primary">ZAMÓW</Button>
+              </Link>
+          )
+      } else {
+      checkout = <p>Zaloguj się, by móc kontynuować</p>
     }
     return (
       <PageWrapper>
         <Paper>
           <Wrapper>
-          <h2 style={{ marginTop: 0, fontWeight: 600 }}>Cart</h2>
+          <h2 style={{ marginTop: 0, fontWeight: 600 }}>Koszyk</h2>
             { this.state.items.length > 0 &&
               <div>
                 <CartTable items={this.state.items}
@@ -87,12 +96,10 @@ class Cart extends Component {
                 />
                 <RightSide>
                   <Subtotal>
-                    <span>Subtotal</span>
+                    <span>Łącznie</span>
                     {totalPrice}
                   </Subtotal>
-                  <Link to={`/checkout`} style={{ textDecoration: "none" }}>
-                    <Button variant="raised" color="primary">Check Out</Button>
-                  </Link>
+                    {checkout}
                 </RightSide>
               </div>
             }

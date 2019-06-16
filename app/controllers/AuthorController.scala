@@ -16,7 +16,7 @@ import scala.concurrent.{ ExecutionContext, Future, Promise }
 @Singleton
 class AuthorController @Inject() (cc: MessagesControllerComponents, silhouette: Silhouette[DefaultEnv], authorRepository: AuthorRepository)(implicit
   webJarsUtil: WebJarsUtil,
-  assets: AssetsFinder, exec: ExecutionContext) extends AbstractController(cc) {
+  assets: AssetsFinder, exec: ExecutionContext) extends AbstractController(cc) with LegacyI18nSupport {
 
   def getAllAuthors = silhouette.UnsecuredAction.async { implicit request =>
     authorRepository

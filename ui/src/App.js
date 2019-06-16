@@ -13,7 +13,6 @@ import Banner from './components/ui/Banner';
 import Products from './components/product/Products';
 import Product from './components/product/Product';
 import Cart from './components/cart/Cart';
-import Order from './components/orders/Order';
 import Login from './components/orders/Login';
 import Admin from './components/admin/Admin';
 import AuthorsList from './components/admin/authors/AuthorsList';
@@ -77,7 +76,6 @@ class App extends Component {
                 <Route exact path="/cart"
                   render={(props) => <Cart config={config} updateNumber={this.updateNumber} />}
                 />
-                <Route exact path="/order" component={Order} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/admin" component={Admin}/>
                 <Route exact path="/admin/authors" component={AuthorsList} />

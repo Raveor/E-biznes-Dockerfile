@@ -28,7 +28,7 @@ class ProductDetails extends Component {
 
   render() {
     const { product } = this.props;
-    console.log(this.props);
+
     return (
       <div>
         <h2 style={{ marginTop: "0" }}>{product.title}</h2>
@@ -38,7 +38,7 @@ class ProductDetails extends Component {
 
           <Description>{product.description}</Description>
         <div style={{ fontWeight: "600", textAlign: "right" }}>
-          {product.price} PLN
+          {product.price} zł
         </div>
         <Right>
           <Button variant="raised" color="primary"

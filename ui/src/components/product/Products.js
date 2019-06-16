@@ -16,7 +16,7 @@ const Products = ({ config }) => {
     <PageWrapper>
       <Paper>
         <Wrapper>
-          <h2 style={{ marginTop: 0, fontWeight: 600 }}>All Products</h2>
+          <h2 style={{ marginTop: 0, fontWeight: 600 }}>Wszystkie produkty</h2>
           <ProductList config={config} />
         </Wrapper>
       </Paper>

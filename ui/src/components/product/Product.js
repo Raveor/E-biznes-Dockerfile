@@ -78,19 +78,30 @@ class Product extends Component {
     const slug = `${config.store_slug}_products`;
     let products = JSON.parse(localStorage.getItem(slug));
     products = Array.isArray(products) ? products : [];
+    let flag = true;
+    for(let i = 0; i < products.length; i++) {
+        if(products[i].id === product.id) {
+            products[i].quantity += parseInt(state.quantity, 10);
+            flag = false;
+        }
 
-    const item = {
-      img : `.`,
-      url: `/product/${product.id}`,
-      name: product.title,
-      price: product.price,
-      quantity: state.quantity
-    };
-    products.push(item)
+    }
+
+    if(flag) {
+        const item = {
+            id: product.id,
+            url: `/product/${product.id}`,
+            name: product.title,
+            price: product.price,
+            quantity: parseInt(state.quantity, 10)
+        };
+        products.push(item);
+        this.props.updateNumber(products.length);
+    }
+
     localStorage.setItem(slug, JSON.stringify(products));
-    this.props.updateNumber(products.length)
     this.props.history.push("/cart");
-  }
+  };
 
   render() {
     return (

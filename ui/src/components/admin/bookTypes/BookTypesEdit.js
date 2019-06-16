@@ -29,7 +29,7 @@ class BookTypesEdit extends Component {
                 name: this.state.name,
             };
 
-            axios.patch("http://localhost:9000/api/bookType/" + this.props.match.params.id, {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+            axios.patch("http://localhost:9000/api/bookType/" + this.props.match.params.id, {bookType}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/bookTypes`));
         }
     };
 
@@ -50,16 +50,26 @@ class BookTypesEdit extends Component {
     };
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.editAuthor}>Edytuj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.editAuthor}>Edytuj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BookTypesEdit);

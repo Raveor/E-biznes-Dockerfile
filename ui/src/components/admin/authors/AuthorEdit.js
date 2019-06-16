@@ -31,7 +31,7 @@ class AuthorEdit extends Component {
                 surname: this.state.surname
             };
 
-            axios.patch("http://localhost:9000/api/author/" + this.props.match.params.id, {author}).then(this.props.history.push(`/admin/authors`));
+            axios.patch("http://localhost:9000/api/author/" + this.props.match.params.id, {author}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/authors`));
         }
     };
 
@@ -59,17 +59,27 @@ class AuthorEdit extends Component {
     };
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Nazwisko" name="surname" value={this.state.surname} onChange={this.setSurnameState} /><br />
+                            <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.editAuthor}>Edytuj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Nazwisko" name="surname" value={this.state.surname} onChange={this.setSurnameState} /><br />
-                        <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.editAuthor}>Edytuj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(AuthorEdit);

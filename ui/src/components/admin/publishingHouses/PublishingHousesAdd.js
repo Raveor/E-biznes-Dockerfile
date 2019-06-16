@@ -29,7 +29,7 @@ class PublishingHousesAdd extends Component {
                 name: this.state.name
             };
 
-            axios.put("http://localhost:9000/api/publishingHouse", {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+            axios.put("http://localhost:9000/api/publishingHouse", {publishingHouse}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/publishingHouses`));
         }
     };
 
@@ -40,16 +40,26 @@ class PublishingHousesAdd extends Component {
     };
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Nazwa" name="name" onChange={this.setNameState}/><br/>
+                            <Button variant="raised" color="primary" onClick={this.addPublishingHouse}>Dodaj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Nazwa" name="name" onChange={this.setNameState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.addPublishingHouse}>Dodaj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(PublishingHousesAdd);

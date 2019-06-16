@@ -90,7 +90,7 @@ class BooksList extends Component {
                 open: false
             });
 
-            axios.delete("http://localhost:9000/api/book/" + this.state.deleteId)
+            axios.delete("http://localhost:9000/api/book/" + this.state.deleteId, {headers: {'X-Auth-Token': window.token}})
                 .then(data => {
                     alert("Usunieto książkę!");
                     this.setState({deleteId: null});
@@ -100,104 +100,111 @@ class BooksList extends Component {
     }
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <Link to={`/admin/books/add`} style={{ textDecoration: "none" }}>
+                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
+                            </Link>
+                            <Table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tytuł</th>
+                                    <th>Autor</th>
+                                    <th>Wydawnictwo</th>
+                                    <th>Data wydania</th>
+                                    <th>Gatunek</th>
+                                    <th>Cena</th>
+                                    <th>Akcje</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                { this.state.books.map((book,i) => {
+                                    return (<tr key={`book${i}`}>
+                                        <td>
+                                            {book.id}
+                                        </td>
+                                        <td>
+                                            {book.title}
+                                        </td>
+                                        <td>
+                                            {this.state.authors.map((author) => {
+                                                if(author.id === book.author) {
+                                                    return `${author.surname} ${author.name}`
+                                                } else {
+                                                    return ''
+                                                }
+                                            })}
+                                        </td>
+                                        <td>
+                                            {this.state.publishingHouses.map((publishingHouse) => {
+                                                if(publishingHouse.id === book.publishingHouse) {
+                                                    return `${publishingHouse.name}`
+                                                } else {
+                                                    return ''
+                                                }
+                                            })}
+                                        </td>
+                                        <td>
+                                            {book.publishYear}
+                                        </td>
+                                        <td>
+                                            {this.state.bookTypes.map((bookType) => {
+                                                if(bookType.id === book.bookType) {
+                                                    return `${bookType.name}`
+                                                } else {
+                                                    return ''
+                                                }
+                                            })}
+                                        </td>
+                                        <td>
+                                            {book.price}
+                                        </td>
+                                        <td>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(book.id)}><DeleteIcon /></Button>
+                                            <Link to={`/admin/books/${book.id}/edit`} style={{ textDecoration: "none" }}>
+                                                <Button variant="raised" color="primary"><EditIcon /></Button>
+                                            </Link>
+                                        </td>
+                                    </tr>);
+                                })}
+                                </tbody>
+                            </Table>
+                        </Wrapper>
+                    </Paper>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={() => this.handleClose()}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Czy na pewno chcesz usunąć tą książkę?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => this.handleClose()} color="primary">
+                                Nie
+                            </Button>
+                            <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
+                                Tak
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </PageWrapper> );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <Link to={`/admin/books/add`} style={{ textDecoration: "none" }}>
-                            <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
-                        </Link>
-                        <Table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tytuł</th>
-                                <th>Autor</th>
-                                <th>Wydawnictwo</th>
-                                <th>Data wydania</th>
-                                <th>Gatunek</th>
-                                <th>Cena</th>
-                                <th>Akcje</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            { this.state.books.map((book,i) => {
-                                return (<tr key={`book${i}`}>
-                                    <td>
-                                        {book.id}
-                                    </td>
-                                    <td>
-                                        {book.title}
-                                    </td>
-                                    <td>
-                                        {this.state.authors.map((author) => {
-                                            if(author.id === book.author) {
-                                                return `${author.surname} ${author.name}`
-                                            } else {
-                                                return ''
-                                            }
-                                        })}
-                                    </td>
-                                    <td>
-                                        {this.state.publishingHouses.map((publishingHouse) => {
-                                            if(publishingHouse.id === book.publishingHouse) {
-                                                return `${publishingHouse.name}`
-                                            } else {
-                                                return ''
-                                            }
-                                        })}
-                                    </td>
-                                    <td>
-                                        {book.publishYear}
-                                    </td>
-                                    <td>
-                                        {this.state.bookTypes.map((bookType) => {
-                                            if(bookType.id === book.bookType) {
-                                                return `${bookType.name}`
-                                            } else {
-                                                return ''
-                                            }
-                                        })}
-                                    </td>
-                                    <td>
-                                        {book.price}
-                                    </td>
-                                    <td>
-                                        <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(book.id)}><DeleteIcon /></Button>
-                                        <Link to={`/admin/books/${book.id}/edit`} style={{ textDecoration: "none" }}>
-                                            <Button variant="raised" color="primary"><EditIcon /></Button>
-                                        </Link>
-                                    </td>
-                                </tr>);
-                            })}
-                            </tbody>
-                        </Table>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-                <Dialog
-                    open={this.state.open}
-                    onClose={() => this.handleClose()}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Czy na pewno chcesz usunąć tą książkę?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.handleClose()} color="primary">
-                            Nie
-                        </Button>
-                        <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
-                            Tak
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </PageWrapper>
-
-
-    );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BooksList);

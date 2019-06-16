@@ -41,23 +41,22 @@ const Wrapper = styled.div`
   }
 `;
 
-class AuthorsList extends Component {
+class UsersList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
             setOpen: false,
             deleteId: null,
-            authors : []
+            publishingHouses : []
         }
     }
 
     componentDidMount() {
         if(window.token !== undefined) {
-            axios.get("http://localhost:9000/api/authors").then(data => {
-                console.log(data);
+            axios.get("http://localhost:9000/api/publishingHouses").then(data => {
                 this.setState({
-                    authors : data.data
+                    publishingHouses : data.data
                 });
             });
         }
@@ -82,9 +81,9 @@ class AuthorsList extends Component {
                 open: false
             });
 
-            axios.delete("http://localhost:9000/api/author/" + this.state.deleteId, {'headers': {'X-Auth-Token': window.token}})
+            axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId)
                 .then(data => {
-                    alert("Usunieto autora!");
+                    alert("Usunieto wydawnictwo!");
                     this.setState({deleteId: null});
                     this.componentDidMount();
                 });
@@ -97,35 +96,29 @@ class AuthorsList extends Component {
                 <PageWrapper>
                     <Paper>
                         <Wrapper>
-                            <Link to={`/admin/authors/add`} style={{ textDecoration: "none" }}>
-                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon/></Button>
+                            <Link to={`/admin/publishingHouses/add`} style={{ textDecoration: "none" }}>
+                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
                             </Link>
                             <Table>
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nazwisko</th>
-                                    <th>Imie</th>
+                                    <th>Nazwa</th>
                                     <th>Akcje</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {   this.state.authors.map((author,i) => {
-                                    return (<tr key={`author${i}`}>
+                                { this.state.publishingHouses.map((publishingHouse,i) => {
+                                    return (<tr key={`publishingHouse${i}`}>
                                         <td>
-                                            {author.id}
+                                            {publishingHouse.id}
                                         </td>
                                         <td>
-                                            {author.surname}
+                                            {publishingHouse.name}
                                         </td>
                                         <td>
-                                            {author.name}
-                                        </td>
-                                        <td>
-                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(author.id)}><DeleteIcon/></Button>
-                                            <Link to={`/admin/authors/${author.id}/edit`} style={{ textDecoration: "none" }}>
-                                                <Button variant="raised" color="primary"><EditIcon/></Button>
-                                            </Link>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
                                         </td>
                                     </tr>);
                                 })}
@@ -141,7 +134,7 @@ class AuthorsList extends Component {
                         <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                Czy na pewno chcesz usunąć tego autora?
+                                Czy na pewno chcesz usunąć to wydawnictwo?
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
@@ -153,8 +146,7 @@ class AuthorsList extends Component {
                             </Button>
                         </DialogActions>
                     </Dialog>
-                </PageWrapper>
-            );
+                </PageWrapper> );
         } else {
             return (<PageWrapper>
                 <Paper>
@@ -166,4 +158,4 @@ class AuthorsList extends Component {
         }
     }
 };
-export default withTheme()(AuthorsList);
+export default withTheme()(UsersList);

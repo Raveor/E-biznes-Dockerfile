@@ -39,7 +39,7 @@ class Banner extends Component {
     const number = quantity ? ` (${quantity})` : "";
 
     const productLink = <Link to={`/product`} style={{flex: 1}} className={classes.menuButton}>
-      <Typography variant="button" gutterBottom>Shop</Typography>
+      <Typography variant="button" gutterBottom>Sklep</Typography>
     </Link>
 
     let menu;
@@ -50,8 +50,11 @@ class Banner extends Component {
       {
         menu = (<span className={classes.buttons}>
           { productLink }
+          <Link to={`/cart`} className={classes.menuButton} style={{ marginRight: 10 }}>
+            <Typography variant="button" gutterBottom>Koszyk {number}</Typography>
+          </Link>
           <Link to={`/login`} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>Login</Typography>
+            <Typography variant="button" gutterBottom>Zaloguj się</Typography>
           </Link>
         </span>)
       }
@@ -60,16 +63,16 @@ class Banner extends Component {
           menu = (<span className={classes.buttons}>
           { productLink }
           <Link to={`/cart`} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>Cart{number}</Typography>
+            <Typography variant="button" gutterBottom>Koszyk {number}</Typography>
           </Link>
           <Link to={`/admin`} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>Admin panel</Typography>
+            <Typography variant="button" gutterBottom>Panel administracyjny</Typography>
           </Link>
           <Link  to={`/orders`} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>My orders</Typography>
+            <Typography variant="button" gutterBottom>Moje zamówienia</Typography>
           </Link>
           <Link to={'/'} onClick={() => {window.token=undefined}} className={classes.menuButton} style={{ marginRight: 10 }}>
-            <Typography variant="button" gutterBottom>Logout</Typography>
+            <Typography variant="button" gutterBottom>Wyloguj się</Typography>
           </Link>
         </span>);
       }

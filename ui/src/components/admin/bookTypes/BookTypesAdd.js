@@ -29,7 +29,7 @@ class BookTypesAdd extends Component {
                 name: this.state.name
             };
 
-            axios.put("http://localhost:9000/api/bookType", {bookType}).then(this.props.history.push(`/admin/bookTypes`));
+            axios.put("http://localhost:9000/api/bookType", {bookType}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/bookTypes`));
         }
     };
 
@@ -41,16 +41,26 @@ class BookTypesAdd extends Component {
     };
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Nazwa" name="name" onChange={this.setNameState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.addAuthor}>Dodaj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Nazwa" name="name" onChange={this.setNameState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.addAuthor}>Dodaj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BookTypesAdd);

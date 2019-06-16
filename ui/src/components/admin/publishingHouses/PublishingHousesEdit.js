@@ -28,7 +28,7 @@ class PublishingHousesEdit extends Component {
             const publishingHouse = {
                 name: this.state.name
             };
-            axios.patch("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id, {publishingHouse}).then(this.props.history.push(`/admin/publishingHouses`));
+            axios.patch("http://localhost:9000/api/publishingHouse/" + this.props.match.params.id, {publishingHouse}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/publishingHouses`));
         }
     };
 
@@ -49,16 +49,26 @@ class PublishingHousesEdit extends Component {
     };
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.editPublishingHouse}>Edytuj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Imie" name="name" value={this.state.name} onChange={this.setNameState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.editPublishingHouse}>Edytuj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(PublishingHousesEdit);

@@ -81,7 +81,7 @@ class BookTypesList extends Component {
                 open: false
             });
 
-            axios.delete("http://localhost:9000/api/bookType/" + this.state.deleteId)
+            axios.delete("http://localhost:9000/api/bookType/" + this.state.deleteId, {headers: {'X-Auth-Token': window.token}})
                 .then(data => {
                     alert("Usunieto autora!");
                     this.setState({deleteId: null});
@@ -91,66 +91,73 @@ class BookTypesList extends Component {
     }
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <Link to={`/admin/bookTypes/add`} style={{ textDecoration: "none" }}>
+                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
+                            </Link>
+                            <Table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nazwa gatunku</th>
+                                    <th>Akcje</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                { this.state.bookTypes.map((bookType,i) => {
+                                    return (<tr key={`bookType${i}`}>
+                                        <td>
+                                            {bookType.id}
+                                        </td>
+                                        <td>
+                                            {bookType.name}
+                                        </td>
+                                        <td>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(bookType.id)}><DeleteIcon/></Button>
+                                            <Link to={`/admin/bookTypes/${bookType.id}/edit`} style={{ textDecoration: "none" }}>
+                                                <Button variant="raised" color="primary"><EditIcon/></Button>
+                                            </Link>
+                                        </td>
+                                    </tr>);
+                                })}
+                                </tbody>
+                            </Table>
+                        </Wrapper>
+                    </Paper>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={() => this.handleClose()}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Czy na pewno chcesz usunąć tego autora?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => this.handleClose()} color="primary">
+                                Nie
+                            </Button>
+                            <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
+                                Tak
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </PageWrapper> );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <Link to={`/admin/bookTypes/add`} style={{ textDecoration: "none" }}>
-                            <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
-                        </Link>
-                        <Table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nazwa gatunku</th>
-                                <th>Akcje</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            { this.state.bookTypes.map((bookType,i) => {
-                                return (<tr key={`bookType${i}`}>
-                                    <td>
-                                        {bookType.id}
-                                    </td>
-                                    <td>
-                                        {bookType.name}
-                                    </td>
-                                    <td>
-                                        <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(bookType.id)}><DeleteIcon/></Button>
-                                        <Link to={`/admin/bookTypes/${bookType.id}/edit`} style={{ textDecoration: "none" }}>
-                                            <Button variant="raised" color="primary"><EditIcon/></Button>
-                                        </Link>
-                                    </td>
-                                </tr>);
-                            })}
-                            </tbody>
-                        </Table>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-                <Dialog
-                    open={this.state.open}
-                    onClose={() => this.handleClose()}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Czy na pewno chcesz usunąć tego autora?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.handleClose()} color="primary">
-                            Nie
-                        </Button>
-                        <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
-                            Tak
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </PageWrapper>
-
-
-    );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BookTypesList);

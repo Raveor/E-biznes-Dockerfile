@@ -25,7 +25,7 @@ const Spacer = styled.span`
 const Breadcrumb = ({ product, theme }) => {  
   return (
     <Wrapper>
-      <Link to={'/product'}>{"All Products"}</Link>
+      <Link to={'/product'}>{"Wszystkie produkty"}</Link>
       <Spacer color={theme.palette.primary.main}>&raquo;</Spacer>
       <Link to={`/product/${product.id}`}>{product.title}</Link>
     </Wrapper>

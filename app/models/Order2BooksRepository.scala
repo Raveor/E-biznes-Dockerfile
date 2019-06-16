@@ -21,10 +21,12 @@ class Order2BooksRepository @Inject() (val dbConfigProvider: DatabaseConfigProvi
 
     def book_id = column[Int]("book_id", O.PrimaryKey)
 
+    def quantity = column[Int]("quantity")
+
     def book_fk = foreignKey("ct_t_order2books_book_id_fk", book_id, bookTable)(_.id)
     def order_fk = foreignKey("ct_t_order2books_order_id_fk", order_id, orderTable)(_.id)
 
-    def * = (order_id, book_id) <> ((Order2Books.apply _).tupled, Order2Books.unapply)
+    def * = (order_id, book_id, quantity) <> ((Order2Books.apply _).tupled, Order2Books.unapply)
   }
 
   val order2Books = TableQuery[Order2BooksTable]

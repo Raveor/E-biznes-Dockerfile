@@ -55,7 +55,7 @@ class BooksEdit extends Component {
     }
 
     editBook = () => {
-        if(window.token) {
+        if(window.token !== undefined) {
             const book = {
                 title: this.state.title,
                 author: this.state.author,
@@ -65,7 +65,7 @@ class BooksEdit extends Component {
                 price: this.state.price,
                 bookType: this.state.bookType
             };
-            axios.patch("http://localhost:9000/api/book/" + this.props.match.params.id, {book}).then(this.props.history.push(`/admin/books`));
+            axios.patch("http://localhost:9000/api/book/" + this.props.match.params.id, {book}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/books`));
         }
     };
 
@@ -111,46 +111,56 @@ class BooksEdit extends Component {
         });
     };
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Tytuł" name="title" value={this.state.title} onChange={this.setTitleState} /><br />
+                            Autor: <select onChange={this.setAuthorState}>
+                            <option value="" disabled selected>Wybierz autora</option>
+
+                            {
+                                this.state.authors.map((author, i) => {
+                                    return <option key={`author${i}`} value={author.id} selected={author.id === this.state.author}>{`${author.surname} ${author.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            Wydawnictwo: <select onChange={this.setPublishingHouseState}>
+                            <option value="" disabled selected>Wybierz wydawnictwo</option>
+
+                            {
+                                this.state.publishingHouses.map((publishingHouse, i) => {
+                                    return <option key={`publishingHouse${i}`} value={publishingHouse.id} selected={publishingHouse.id === this.state.publishingHouse}>{`${publishingHouse.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            Gatunek: <select onChange={this.setBookTypeState}>
+                            <option value="" disabled selected>Wybierz gatunek</option>
+
+                            {
+                                this.state.bookTypes.map((bookType, i) => {
+                                    return <option  key={`bookType${i}`} value={bookType.id} selected={bookType.id === this.state.bookType}>{`${bookType.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            <input type="number" placeholder="Rok wydania" name="publishYear" value={this.state.publishYear} onChange={this.setPublishYearState} /><br />
+                            <textarea placeholder="Opis książki" name="description" value={this.state.description} onChange={this.setDescriptionState} /><br />
+                            <input type="number" placeholder="Cena" name="price" value={this.state.price} onChange={this.setPriceState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.editBook}>Edytuj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Tytuł" name="title" value={this.state.title} onChange={this.setTitleState} /><br />
-                        Autor: <select onChange={this.setAuthorState}>
-                        <option value="" disabled selected>Wybierz autora</option>
-
-                        {
-                            this.state.authors.map((author, i) => {
-                                return <option key={`author${i}`} value={author.id} selected={author.id === this.state.author}>{`${author.surname} ${author.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        Wydawnictwo: <select onChange={this.setPublishingHouseState}>
-                        <option value="" disabled selected>Wybierz wydawnictwo</option>
-
-                        {
-                            this.state.publishingHouses.map((publishingHouse, i) => {
-                                return <option key={`publishingHouse${i}`} value={publishingHouse.id} selected={publishingHouse.id === this.state.publishingHouse}>{`${publishingHouse.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        Gatunek: <select onChange={this.setBookTypeState}>
-                        <option value="" disabled selected>Wybierz gatunek</option>
-
-                        {
-                            this.state.bookTypes.map((bookType, i) => {
-                                return <option  key={`bookType${i}`} value={bookType.id} selected={bookType.id === this.state.bookType}>{`${bookType.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        <input type="number" placeholder="Rok wydania" name="publishYear" value={this.state.publishYear} onChange={this.setPublishYearState} /><br />
-                        <textarea placeholder="Opis książki" name="description" value={this.state.description} onChange={this.setDescriptionState} /><br />
-                        <input type="number" placeholder="Cena" name="price" value={this.state.price} onChange={this.setPriceState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.editBook}>Edytuj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BooksEdit);

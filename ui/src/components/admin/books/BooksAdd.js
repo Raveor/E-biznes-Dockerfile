@@ -47,7 +47,7 @@ class BooksAdd extends Component {
     }
 
     addBook = () => {
-        if(window.token) {
+        if(window.token !== undefined) {
             const book = {
                 title: this.state.title,
                 author: this.state.author,
@@ -58,7 +58,7 @@ class BooksAdd extends Component {
                 bookType: this.state.bookType
             };
 
-            axios.put("http://localhost:9000/api/book", {book}).then(this.props.history.push(`/admin/books`));
+            axios.put("http://localhost:9000/api/book", {book}, {headers: {'X-Auth-Token': window.token}}).then(this.props.history.push(`/admin/books`));
         }
     };
 
@@ -104,46 +104,56 @@ class BooksAdd extends Component {
         });
     };
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <input type="text" placeholder="Tytuł" name="title" onChange={this.setTitleState} /><br />
+                            Autor: <select onChange={this.setAuthorState}>
+                            <option value="" disabled selected>Wybierz autora</option>
+
+                            {
+                                this.state.authors.map((author, i) => {
+                                    return <option  key={`author${i}`} value={author.id}>{`${author.surname} ${author.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            Wydawnictwo: <select onChange={this.setPublishingHouseState}>
+                            <option value="" disabled selected>Wybierz wydawnictwo</option>
+
+                            {
+                                this.state.publishingHouses.map((publishingHouse, i) => {
+                                    return <option key={`publishingHouse${i}`} value={publishingHouse.id}>{`${publishingHouse.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            Gatunek: <select onChange={this.setBookTypeState}>
+                            <option value="" disabled selected>Wybierz gatunek</option>
+
+                            {
+                                this.state.bookTypes.map((bookType, i) => {
+                                    return <option  key={`bookType${i}`} value={bookType.id}>{`${bookType.name}`}</option>
+                                })
+                            }
+                            </select><br />
+                            <input type="number" placeholder="Rok wydania" name="publishYear" onChange={this.setPublishYearState} /><br />
+                            <textarea placeholder="Opis książki" name="description" onChange={this.setDescriptionState} /><br />
+                            <input type="number" placeholder="Cena" name="price" onChange={this.setPriceState} /><br />
+                            <Button variant="raised" color="primary" onClick={this.addBook}>Dodaj</Button>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>
+            );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <input type="text" placeholder="Tytuł" name="title" onChange={this.setTitleState} /><br />
-                        Autor: <select onChange={this.setAuthorState}>
-                        <option value="" disabled selected>Wybierz autora</option>
-
-                        {
-                            this.state.authors.map((author, i) => {
-                                return <option  key={`author${i}`} value={author.id}>{`${author.surname} ${author.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        Wydawnictwo: <select onChange={this.setPublishingHouseState}>
-                        <option value="" disabled selected>Wybierz wydawnictwo</option>
-
-                        {
-                            this.state.publishingHouses.map((publishingHouse, i) => {
-                                return <option key={`publishingHouse${i}`} value={publishingHouse.id}>{`${publishingHouse.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        Gatunek: <select onChange={this.setBookTypeState}>
-                        <option value="" disabled selected>Wybierz gatunek</option>
-
-                        {
-                            this.state.bookTypes.map((bookType, i) => {
-                                return <option  key={`bookType${i}`} value={bookType.id}>{`${bookType.name}`}</option>
-                            })
-                        }
-                        </select><br />
-                        <input type="number" placeholder="Rok wydania" name="publishYear" onChange={this.setPublishYearState} /><br />
-                        <textarea placeholder="Opis książki" name="description" onChange={this.setDescriptionState} /><br />
-                        <input type="number" placeholder="Cena" name="price" onChange={this.setPriceState} /><br />
-                        <Button variant="raised" color="primary" onClick={this.addBook}>Dodaj</Button>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-            </PageWrapper>
-        );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(BooksAdd);

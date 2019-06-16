@@ -70,8 +70,8 @@ class CartTable extends Component {
         <thead>
           <tr>
             <th>Product</th>
-            <th>Quantity</th>
-            <th>Total</th>
+            <th>Ilość</th>
+            <th>Razem</th>
             <th></th>
           </tr>
         </thead>
@@ -109,7 +109,7 @@ class CartTable extends Component {
               </td>
               <td>
                   {console.log(d)}
-                ${(d.quantity*d.price).toFixed(2)}
+                {(d.quantity*d.price).toFixed(2)} zł
               </td>
               <td>
                 <Remove onClick={() => this.props.removeItem(i)}>✕</Remove>

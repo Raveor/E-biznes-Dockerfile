@@ -81,7 +81,7 @@ class PublishingHousesList extends Component {
                 open: false
             });
 
-            axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId)
+            axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId, {headers: {'X-Auth-Token': window.token}})
                 .then(data => {
                     alert("Usunieto wydawnictwo!");
                     this.setState({deleteId: null});
@@ -91,66 +91,73 @@ class PublishingHousesList extends Component {
     }
 
     render() {
-        return (
-            <PageWrapper>
+        if(window.token !== undefined) {
+            return (
+                <PageWrapper>
+                    <Paper>
+                        <Wrapper>
+                            <Link to={`/admin/publishingHouses/add`} style={{ textDecoration: "none" }}>
+                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
+                            </Link>
+                            <Table>
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nazwa</th>
+                                    <th>Akcje</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                { this.state.publishingHouses.map((publishingHouse,i) => {
+                                    return (<tr key={`publishingHouse${i}`}>
+                                        <td>
+                                            {publishingHouse.id}
+                                        </td>
+                                        <td>
+                                            {publishingHouse.name}
+                                        </td>
+                                        <td>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
+                                            <Link to={`/admin/publishingHouses/${publishingHouse.id}/edit`} style={{ textDecoration: "none" }}>
+                                                <Button variant="raised" color="primary"><EditIcon /></Button>
+                                            </Link>
+                                        </td>
+                                    </tr>);
+                                })}
+                                </tbody>
+                            </Table>
+                        </Wrapper>
+                    </Paper>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={() => this.handleClose()}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Czy na pewno chcesz usunąć to wydawnictwo?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => this.handleClose()} color="primary">
+                                Nie
+                            </Button>
+                            <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
+                                Tak
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </PageWrapper> );
+        } else {
+            return (<PageWrapper>
                 <Paper>
                     <Wrapper>
-                        <Link to={`/admin/publishingHouses/add`} style={{ textDecoration: "none" }}>
-                            <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
-                        </Link>
-                        <Table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nazwa</th>
-                                <th>Akcje</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            { this.state.publishingHouses.map((publishingHouse,i) => {
-                                return (<tr key={`publishingHouse${i}`}>
-                                    <td>
-                                        {publishingHouse.id}
-                                    </td>
-                                    <td>
-                                        {publishingHouse.name}
-                                    </td>
-                                    <td>
-                                        <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
-                                        <Link to={`/admin/publishingHouses/${publishingHouse.id}/edit`} style={{ textDecoration: "none" }}>
-                                            <Button variant="raised" color="primary"><EditIcon /></Button>
-                                        </Link>
-                                    </td>
-                                </tr>);
-                            })}
-                            </tbody>
-                        </Table>
+                        <p>Adminem trzeba być i to zalogowanym na dodatek by tu wkroczyc!</p>
                     </Wrapper>
                 </Paper>
-                <Dialog
-                    open={this.state.open}
-                    onClose={() => this.handleClose()}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description">
-                    <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Czy na pewno chcesz usunąć to wydawnictwo?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => this.handleClose()} color="primary">
-                            Nie
-                        </Button>
-                        <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
-                            Tak
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </PageWrapper>
-
-
-    );
+            </PageWrapper>)
+        }
     }
 };
 export default withTheme()(PublishingHousesList);
