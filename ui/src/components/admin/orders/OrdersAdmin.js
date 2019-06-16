@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import {withTheme} from '@material-ui/core/styles';
 
-import PageWrapper from "../ui/PageWrapper";
+import PageWrapper from "../../ui/PageWrapper";
 import Paper from "@material-ui/core/Paper/Paper";
 import Button from "@material-ui/core/Button/Button";
 import axios from 'axios';
@@ -74,57 +74,54 @@ const Name = styled.div`
   }
 `;
 
-class OrdersList extends Component {
+class OrdersAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             open: false,
             setOpen: false,
             deleteId: null,
-            clientId: 0,
             orders: []
         }
     }
 
     componentDidMount() {
         if(window.token !== undefined) {
-            axios.get("http://localhost:9000/api/client", {headers: {'X-Auth-Token': window.token}}).then(data => {
-                this.setState({
-                   clientId: data.data[0].id
-                });
+            axios.get("http://localhost:9000/api/orders", {headers: {'X-Auth-Token': window.token}}).then(data => {
                 let ordersTab = [];
-                axios.get("http://localhost:9000/api/orders/" + this.state.clientId, {headers: {'X-Auth-Token': window.token}}).then(data => {
-                    data.data.forEach(order => {
-                        let orderDetails = {
-                            orderId: order.id,
-                            books: []
-                        };
-                        axios.get("http://localhost:9000/api/order2books/" + order.id, {headers: {'X-Auth-Token': window.token}}).then(data => {
-                            data.data.forEach(book => {
+                data.data.forEach(order => {
+                   axios.all([axios.get("http://localhost:9000/api/order2books/" + order.id, {headers: {'X-Auth-Token': window.token}}),
+                   axios.get("http://localhost:9000/api/client/" + order.client_id, {headers: {'X-Auth-Token': window.token}})])
+                       .then(axios.spread((books, client) => {
+                           books.data.forEach(book => {
                                axios.get("http://localhost:9000/api/book/" + book.book_id).then(data => {
+                                   let orderDetails = {
+                                       orderId: order.id,
+                                       clientName: client.data[0].username,
+                                       books: []
+                                   };
                                    let booksDetails = {
-                                     id: book.book_id,
-                                     title: data.data[0].title,
-                                     price: data.data[0].price,
-                                     quantity: book.quantity
-                                 };
-                                    orderDetails.books.push(booksDetails);
+                                       id: book.book_id,
+                                       title: data.data[0].title,
+                                       price: data.data[0].price,
+                                       quantity: book.quantity
+                                   };
+                                   orderDetails.books.push(booksDetails);
 
                                    for(let i = ordersTab.length - 1; i >= 0; i--) {
 
-                                        if(ordersTab[i].orderId === orderDetails.orderId) {
-                                            console.log("OK");
-                                            ordersTab.splice(i);
-                                        }
-                                    }
-                                    ordersTab.push(orderDetails);
+                                       if(ordersTab[i].orderId === orderDetails.orderId) {
+                                           console.log("OK");
+                                           ordersTab.splice(i);
+                                       }
+                                   }
+                                   ordersTab.push(orderDetails);
                                    this.setState({
                                        orders: ordersTab
                                    });
                                });
-                            });
-                        });
-                    });
+                           });
+                    }));
                 });
             });
         }
@@ -254,4 +251,4 @@ class OrdersList extends Component {
         }
     }
 };
-export default withTheme()(OrdersList);
+export default withTheme()(OrdersAdmin);
