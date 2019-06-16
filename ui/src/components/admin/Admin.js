@@ -53,32 +53,32 @@ class Admin extends Component {
                               <tr>
                                   <td>
                                       <Link to={`/admin/authors`} style={{ textDecoration: "none" }}>
-                                          Authors
+                                          Autorzy
                                       </Link>
                                   </td>
                                   <td>
                                       <Link to={`/admin/books`} style={{ textDecoration: "none" }}>
-                                          Books
+                                          Książki
                                       </Link>
                                   </td>
                                   <td>
                                       <Link to={`/admin/bookTypes`} style={{ textDecoration: "none" }}>
-                                          Book types
+                                          Gatunki książek
                                       </Link>
                                   </td>
                                   <td>
                                       <Link to={`/admin/orders`} style={{ textDecoration: "none" }}>
-                                          Orders
+                                          Zamówienia
                                       </Link>
                                   </td>
                                   <td>
                                       <Link to={`/admin/publishingHouses`} style={{ textDecoration: "none" }}>
-                                          Publishing houses
+                                          Wydawnictwa
                                       </Link>
                                   </td>
                                   <td>
                                       <Link to={`/admin/users`} style={{ textDecoration: "none" }}>
-                                          Users
+                                          Użytkownicy
                                       </Link>
                                   </td>
                               </tr>

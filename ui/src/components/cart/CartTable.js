@@ -108,7 +108,6 @@ class CartTable extends Component {
                 />
               </td>
               <td>
-                  {console.log(d)}
                 {(d.quantity*d.price).toFixed(2)} zł
               </td>
               <td>

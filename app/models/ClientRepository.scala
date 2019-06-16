@@ -18,9 +18,9 @@ class ClientRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
 
     def username = column[String]("username")
 
-    def twitter_id = column[String]("twitter_id")
+    def twitter_id = column[Option[String]]("twitter_id")
 
-    def facebook_id = column[String]("facebook_id")
+    def facebook_id = column[Option[String]]("facebook_id")
 
     def admin_flag = column[Boolean]("admin_flag")
 
@@ -49,7 +49,7 @@ class ClientRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
     }
   }
 
-  def create(username: String, email: String, twitter_id: String, facebook_id: String, admin_flag: Boolean): Future[Int] = db.run {
+  def create(username: String, email: String, twitter_id: Option[String], facebook_id: Option[String], admin_flag: Boolean): Future[Int] = db.run {
     client += Client(0, username, email, twitter_id, facebook_id, admin_flag)
   }
 
@@ -57,4 +57,7 @@ class ClientRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
     client.filter(_.id === id).delete
   }
 
+  def setAdmin(id: Int, admin: Boolean): Future[Int] = db.run {
+    client.filter(_.id === id).map(c => c.admin_flag).update(admin)
+  }
 }

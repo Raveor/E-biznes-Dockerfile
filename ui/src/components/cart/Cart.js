@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import {Redirect} from 'react-router-dom'
 
 import PageWrapper from '../ui/PageWrapper';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import CartTable from './CartTable';
 import config from '../../assets/store_config';
+import axios from 'axios';
 
 const Wrapper = styled.div`
   padding: 40px;
@@ -65,6 +66,20 @@ class Cart extends Component {
     this.updateItems(items);
   }
 
+  placeOrder() {
+      const slug = `${config.store_slug}_products`;
+      let items = JSON.parse(localStorage.getItem(slug));
+      let order = {
+        books: []
+      };
+
+      items.forEach(item => {
+        order.books.push({book_id: item.id, quantity: item.quantity});
+      });
+
+      axios.put("http://localhost:9000/api/order", {order}, {headers: {'X-Auth-Token': window.token}}).then(data => <Redirect to={'/orders'} />);
+  }
+
   render() {
     let totalPrice;
     if (this.state.items.length) {
@@ -75,9 +90,8 @@ class Cart extends Component {
     }
     let checkout;
     if(window.token !== undefined) {
-          checkout = (   <Link to={`/checkout`} style={{ textDecoration: "none" }}>
-                  <Button variant="raised" color="primary">ZAMÓW</Button>
-              </Link>
+          checkout = (
+                  <Button variant="raised" color="primary" onClick={this.placeOrder}>ZAMÓW</Button>
           )
       } else {
       checkout = <p>Zaloguj się, by móc kontynuować</p>

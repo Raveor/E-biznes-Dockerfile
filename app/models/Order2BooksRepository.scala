@@ -37,18 +37,20 @@ class Order2BooksRepository @Inject() (val dbConfigProvider: DatabaseConfigProvi
     order2Books.result
   }
 
-  def getByIds(order_id: Int, book_id: Int): Future[Seq[Order2Books]] = db.run {
+  def getById(order_id: Int): Future[Seq[Order2Books]] = db.run {
     order2Books
-      .filter(_.book_id === book_id)
       .filter(_.order_id === order_id)
       .result
   }
 
-  def delete(order_id: Int, book_id: Int): Future[Int] = db.run {
+  def delete(order_id: Int): Future[Int] = db.run {
     order2Books
-      .filter(_.book_id === book_id)
       .filter(_.order_id === order_id)
       .delete
+  }
+
+  def insert(order_id: Int, book_id: Int, quantity: Int): Future[Int] = db.run {
+    order2Books += Order2Books(order_id, book_id, quantity)
   }
 
 }

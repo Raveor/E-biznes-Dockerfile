@@ -35,6 +35,21 @@ class OrderRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, v
       .result
   }
 
+  def getByClientId(id: Int): Future[Seq[Order]] = db.run {
+    order
+      .filter(_.client_id === id)
+      .result
+  }
+
+  def insert(client_id: Int): Future[Order] = db.run {
+    order += Order(0, client_id)
+    (order.map(o => o.client_id)
+      returning order.map(_.id)
+      into { case (client_id, id) => Order(id, client_id) }
+    ) += (client_id: Int)
+
+  }
+
   def edit(id: Int, client_id: Int): Future[Int] = db.run {
     order.filter(_.id === id).update(Order(id, client_id))
   }

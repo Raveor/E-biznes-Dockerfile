@@ -20,7 +20,9 @@ const Hero = styled.div`
 class Landing extends Component {
 
     componentDidMount() {
-        window.token = window.location.search.replace("?token=", "");
+        if(window.location.href.search("\\?token=") !== -1) {
+            window.token = window.location.search.replace("?token=", "");
+        }
     }
 
   render() {

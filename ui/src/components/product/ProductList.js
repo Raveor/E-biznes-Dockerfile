@@ -66,7 +66,6 @@ class ProductList extends Component {
                 this.setState({
                     books: value.data
                 });
-                console.log(value.data);
             }).catch(error => console.error('Error:', error))
     }
 

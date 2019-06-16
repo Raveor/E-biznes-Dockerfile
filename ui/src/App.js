@@ -27,6 +27,8 @@ import PublishingHousesEdit from './components/admin/publishingHouses/Publishing
 import BooksList from './components/admin/books/BooksList';
 import BooksAdd from './components/admin/books/BooksAdd';
 import BooksEdit from './components/admin/books/BooksEdit';
+import UsersList from './components/admin/users/UsersList';
+import OrdersList from './components/orders/OrdersList';
 
 const theme = createMuiTheme({
   palette: {
@@ -90,7 +92,8 @@ class App extends Component {
                   <Route exact path="/admin/books" component={BooksList} />
                   <Route exact path="/admin/books/add" component={BooksAdd} />
                   <Route exact path="/admin/books/:id/edit" component={BooksEdit} />
-
+                  <Route exact path="/admin/users" component={UsersList} />
+                  <Route exact path="/orders" component={OrdersList} />
               </div>
             </MuiThemeProvider>
           </ScrollToTop>

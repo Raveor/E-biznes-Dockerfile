@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { withTheme } from '@material-ui/core/styles';
 
 import PageWrapper from "../../ui/PageWrapper";
@@ -13,8 +12,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
+import AdminIcon from '@material-ui/icons/SupervisorAccount';
 
 const Table = styled.table`
   width: 100%;
@@ -48,15 +46,15 @@ class UsersList extends Component {
             open: false,
             setOpen: false,
             deleteId: null,
-            publishingHouses : []
+            clients : []
         }
     }
 
     componentDidMount() {
         if(window.token !== undefined) {
-            axios.get("http://localhost:9000/api/publishingHouses").then(data => {
+            axios.get("http://localhost:9000/api/clients", {headers: {'X-Auth-Token': window.token}}).then(data => {
                 this.setState({
-                    publishingHouses : data.data
+                    clients : data.data
                 });
             });
         }
@@ -81,12 +79,22 @@ class UsersList extends Component {
                 open: false
             });
 
-            axios.delete("http://localhost:9000/api/publishingHouse/" + this.state.deleteId)
+            axios.delete("http://localhost:9000/api/client/" + this.state.deleteId, {headers: {'X-Auth-Token': window.token}})
                 .then(data => {
-                    alert("Usunieto wydawnictwo!");
+                    alert("Usunieto użytkownika!");
                     this.setState({deleteId: null});
                     this.componentDidMount();
                 });
+        }
+    }
+
+    setAdmin(id, adminFlag) {
+        if(window.token !== undefined) {
+            const admin = {
+                admin: adminFlag
+            }
+            axios.post("http://localhost:9000/api/client/" + id, {admin}, {headers: {'X-Auth-Token': window.token}})
+                .then(data => this.componentDidMount());
         }
     }
 
@@ -96,29 +104,42 @@ class UsersList extends Component {
                 <PageWrapper>
                     <Paper>
                         <Wrapper>
-                            <Link to={`/admin/publishingHouses/add`} style={{ textDecoration: "none" }}>
-                                <Button variant="raised" color="primary" style={{marginBottom: "15px"}}><AddIcon /></Button>
-                            </Link>
                             <Table>
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Nazwa</th>
+                                    <th>Email</th>
+                                    <th>Facebook ID</th>
+                                    <th>Twitter ID</th>
+                                    <th>Admin</th>
                                     <th>Akcje</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                { this.state.publishingHouses.map((publishingHouse,i) => {
+                                { this.state.clients.map((client,i) => {
                                     return (<tr key={`publishingHouse${i}`}>
                                         <td>
-                                            {publishingHouse.id}
+                                            {client.id}
                                         </td>
                                         <td>
-                                            {publishingHouse.name}
+                                            {client.username}
                                         </td>
                                         <td>
-                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
-                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(publishingHouse.id)}><DeleteIcon /></Button>
+                                            {client.email}
+                                        </td>
+                                        <td>
+                                            {client.facebook_id}
+                                        </td>
+                                        <td>
+                                            {client.twitter_id}
+                                        </td>
+                                        <td>
+                                            {client.admin_flag ? "true" : "false"}
+                                        </td>
+                                        <td>
+                                            <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(client.id)}><DeleteIcon /></Button>
+                                            <Button variant="raised" color="primary" onClick={() => this.setAdmin(client.id, !client.adminFlag)}><AdminIcon /></Button>
                                         </td>
                                     </tr>);
                                 })}
@@ -134,7 +155,7 @@ class UsersList extends Component {
                         <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                Czy na pewno chcesz usunąć to wydawnictwo?
+                                Czy na pewno chcesz usunąć tego użytkownika?
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>

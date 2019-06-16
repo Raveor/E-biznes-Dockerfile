@@ -2,10 +2,11 @@ package controllers
 
 import akka.actor.ActorSystem
 import com.mohiva.play.silhouette.api.Silhouette
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import javax.inject._
 import models.ClientRepository
 import org.webjars.play.WebJarsUtil
-import play.api.libs.json.Json
+import play.api.libs.json.{ JsObject, Json }
 import play.api.mvc._
 import utils.auth.DefaultEnv
 
@@ -31,8 +32,24 @@ class ClientController @Inject() (cc: ControllerComponents, silhouette: Silhouet
       .map(client => Ok(Json.toJson(client)))
   }
 
-  def editUser(id: Integer) = Action {
-    Ok(Json.obj("content" -> "Scala Play React Seed"))
+  def getUser = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
+    clientRepository
+      .getByProvider(request.identity.loginInfo.providerID, request.identity.loginInfo.providerKey)
+      .map(client => Ok(Json.toJson(client)))
+  }
+
+  def setAdmin(id: Integer) = silhouette.SecuredAction.async { implicit request =>
+    val body: JsObject = request.body.asJson.get("admin").as[JsObject]
+
+    clientRepository
+      .setAdmin(id, body.value("admin").as[Boolean])
+      .map(client => Ok(Json.toJson(client)))
+  }
+
+  def deleteUser(id: Integer) = silhouette.SecuredAction.async { implicit request =>
+    clientRepository
+      .delete(id)
+      .map(client => Ok(Json.toJson(client)))
   }
 
 }

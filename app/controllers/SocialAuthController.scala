@@ -41,9 +41,9 @@ class SocialAuthController @Inject() (
                       clients =>
                         if (clients.isEmpty) {
                           if (profile.loginInfo.providerID == "facebook") {
-                            clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, null, profile.loginInfo.providerKey, false)
+                            clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, null, Option(profile.loginInfo.providerKey), false)
                           } else {
-                            clientRepository.create(profile.firstName.get + " " + profile.lastName.get, profile.email.get, profile.loginInfo.providerKey, null, false)
+                            clientRepository.create(profile.fullName.get, profile.email.get, Option(profile.loginInfo.providerKey), null, false)
                           }
                         }
                     )
