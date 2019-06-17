@@ -95,10 +95,6 @@ class OrdersList extends Component {
                 let ordersTab = [];
                 axios.get("http://localhost:9000/api/orders/" + this.state.clientId, {headers: {'X-Auth-Token': window.token}}).then(data => {
                     data.data.forEach(order => {
-                        let orderDetails = {
-                            orderId: order.id,
-                            books: []
-                        };
                         axios.get("http://localhost:9000/api/order2books/" + order.id, {headers: {'X-Auth-Token': window.token}}).then(data => {
                             data.data.forEach(book => {
                                axios.get("http://localhost:9000/api/book/" + book.book_id).then(data => {
