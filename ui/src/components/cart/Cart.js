@@ -42,7 +42,7 @@ class Cart extends Component {
   componentDidMount() {
     const slug = `${config.store_slug}_products`;
     let items = JSON.parse(localStorage.getItem(slug));
-    this.setState({ 
+    this.setState({
       items : items ? items : []
     })
   }
@@ -124,7 +124,7 @@ class Cart extends Component {
               </div>
             }
             { this.state.items.length === 0 &&
-              <p>Hmmmm, there's nothing in your cart yet.</p>
+              <p>Wygląda na to, że nic nie ma w koszyku.</p>
             }
           </Wrapper>
         </Paper>

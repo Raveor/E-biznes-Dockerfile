@@ -161,18 +161,28 @@ class OrdersAdmin extends Component {
 
     render() {
         if(window.token !== undefined) {
-            return (
-                <PageWrapper>
+            if(this.state.orders.length === 0) {
+                return (<PageWrapper>
                     <Paper>
                         <Wrapper>
+                            <p>Wygląda na to, że nic jeszcze nie zostało zamówione!</p>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>)
+            } else {
+                return (
+                    <PageWrapper>
+                        <Paper>
+                            <Wrapper>
                                 {
-                                    this.state.orders.map((order,i) => {
+                                    this.state.orders.map((order, i) => {
                                         return (<ExpansionPanel>
                                                 <ExpansionPanelSummary
-                                                    expandIcon={<ExpandMoreIcon />}
+                                                    expandIcon={<ExpandMoreIcon/>}
                                                     aria-controls="panel1a-content"
                                                     id="panel1a-header">
-                                                    <Typography>Zamówienie nr {order.orderId} - {order.clientName}</Typography>
+                                                    <Typography>Zamówienie
+                                                        nr {order.orderId} - {order.clientName}</Typography>
                                                 </ExpansionPanelSummary>
                                                 <ExpansionPanelDetails>
                                                     <Typography>
@@ -185,14 +195,16 @@ class OrdersAdmin extends Component {
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                            {order.books.map((book,i) => {
+                                                            {order.books.map((book, i) => {
                                                                 return (<tr key={`book${i}`}>
                                                                         <td>
                                                                             <Flex>
-                                                                                <Image img={'./../placeholder.png'} />
+                                                                                <Image img={'./../placeholder.png'}/>
                                                                                 <Title>
-                                                                                    <Name underline={this.props.theme.palette.primary.main}>
-                                                                                        <Link to={`/product/${book.id}`}>{book.title}</Link>
+                                                                                    <Name
+                                                                                        underline={this.props.theme.palette.primary.main}>
+                                                                                        <Link
+                                                                                            to={`/product/${book.id}`}>{book.title}</Link>
                                                                                     </Name>
                                                                                 </Title>
                                                                             </Flex>
@@ -203,47 +215,49 @@ class OrdersAdmin extends Component {
                                                                                 type="number"
                                                                                 disabled
                                                                                 margin="none"
-                                                                                style={{ width: "40px" }}
+                                                                                style={{width: "40px"}}
                                                                             />
                                                                         </td>
                                                                         <td>
-                                                                            {(book.quantity*book.price).toFixed(2)} zł
+                                                                            {(book.quantity * book.price).toFixed(2)} zł
                                                                         </td>
                                                                     </tr>
                                                                 );
                                                             })}
                                                             </tbody>
                                                         </Table>
-                                                        <Button variant="raised" color="primary" onClick={() => this.handleClickOpen(order.orderId)}><DeleteIcon /></Button>
+                                                        <Button variant="raised" color="primary"
+                                                                onClick={() => this.handleClickOpen(order.orderId)}><DeleteIcon/></Button>
                                                     </Typography>
                                                 </ExpansionPanelDetails>
                                             </ExpansionPanel>
                                         );
                                     })
                                 }
-                        </Wrapper>
-                    </Paper>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={() => this.handleClose()}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                        <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Czy na pewno chcesz usunąć to zamówienie?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => this.handleClose()} color="primary">
-                                Nie
-                            </Button>
-                            <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
-                                Tak
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </PageWrapper> );
+                            </Wrapper>
+                        </Paper>
+                        <Dialog
+                            open={this.state.open}
+                            onClose={() => this.handleClose()}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description">
+                            <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Czy na pewno chcesz usunąć to zamówienie?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => this.handleClose()} color="primary">
+                                    Nie
+                                </Button>
+                                <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
+                                    Tak
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </PageWrapper>);
+            }
         } else {
             return (<PageWrapper>
                 <Paper>

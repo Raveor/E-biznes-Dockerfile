@@ -169,10 +169,19 @@ class OrdersList extends Component {
 
     render() {
         if(window.token !== undefined) {
-            return (
-                <PageWrapper>
+            if(this.state.orders.length === 0) {
+                return (<PageWrapper>
                     <Paper>
                         <Wrapper>
+                            <p>Wygląda na to, że nic jeszcze nie zostało zamówione!</p>
+                        </Wrapper>
+                    </Paper>
+                </PageWrapper>)
+            } else {
+                return (
+                    <PageWrapper>
+                        <Paper>
+                            <Wrapper>
                                 {
                                     this.state.orders.map((order,i) => {
                                         return (<ExpansionPanel>
@@ -229,29 +238,30 @@ class OrdersList extends Component {
                                         );
                                     })
                                 }
-                        </Wrapper>
-                    </Paper>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={() => this.handleClose()}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                        <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                Czy na pewno chcesz usunąć to zamówienie?
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={() => this.handleClose()} color="primary">
-                                Nie
-                            </Button>
-                            <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
-                                Tak
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
-                </PageWrapper> );
+                            </Wrapper>
+                        </Paper>
+                        <Dialog
+                            open={this.state.open}
+                            onClose={() => this.handleClose()}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description">
+                            <DialogTitle id="alert-dialog-title">{"Potwierdź usunięcie?"}</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                    Czy na pewno chcesz usunąć to zamówienie?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => this.handleClose()} color="primary">
+                                    Nie
+                                </Button>
+                                <Button onClick={() => this.handleAgree()} color="primary" autoFocus>
+                                    Tak
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </PageWrapper> );
+            }
         } else {
             return (<PageWrapper>
                 <Paper>
