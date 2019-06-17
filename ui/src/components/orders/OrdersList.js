@@ -102,25 +102,34 @@ class OrdersList extends Component {
                         axios.get("http://localhost:9000/api/order2books/" + order.id, {headers: {'X-Auth-Token': window.token}}).then(data => {
                             data.data.forEach(book => {
                                axios.get("http://localhost:9000/api/book/" + book.book_id).then(data => {
+                                   let orderDetails = {
+                                       orderId: order.id,
+                                       books: []
+                                   };
                                    let booksDetails = {
-                                     id: book.book_id,
-                                     title: data.data[0].title,
-                                     price: data.data[0].price,
-                                     quantity: book.quantity
-                                 };
-                                    orderDetails.books.push(booksDetails);
+                                       id: book.book_id,
+                                       title: data.data[0].title,
+                                       price: data.data[0].price,
+                                       quantity: book.quantity
+                                   };
 
-                                   for(let i = ordersTab.length - 1; i >= 0; i--) {
+                                   let flag = true;
+                                   for(let i = 0; i < ordersTab.length; i++) {
+                                       if(ordersTab[i].orderId === orderDetails.orderId) {
+                                           ordersTab[i].books.push(booksDetails);
+                                           flag = false;
+                                       }
+                                   }
 
-                                        if(ordersTab[i].orderId === orderDetails.orderId) {
-                                            console.log("OK");
-                                            ordersTab.splice(i);
-                                        }
-                                    }
-                                    ordersTab.push(orderDetails);
+                                   if(flag) {
+                                       orderDetails.books.push(booksDetails);
+                                       ordersTab.push(orderDetails);
+                                   }
+
                                    this.setState({
                                        orders: ordersTab
                                    });
+
                                });
                             });
                         });

@@ -106,16 +106,20 @@ class OrdersAdmin extends Component {
                                        price: data.data[0].price,
                                        quantity: book.quantity
                                    };
-                                   orderDetails.books.push(booksDetails);
 
-                                   for(let i = ordersTab.length - 1; i >= 0; i--) {
-
+                                   let flag = true;
+                                   for(let i = 0; i < ordersTab.length; i++) {
                                        if(ordersTab[i].orderId === orderDetails.orderId) {
-                                           console.log("OK");
-                                           ordersTab.splice(i);
+                                           ordersTab[i].books.push(booksDetails);
+                                           flag = false;
                                        }
                                    }
-                                   ordersTab.push(orderDetails);
+
+                                   if(flag) {
+                                       orderDetails.books.push(booksDetails);
+                                       ordersTab.push(orderDetails);
+                                   }
+
                                    this.setState({
                                        orders: ordersTab
                                    });
@@ -168,7 +172,7 @@ class OrdersAdmin extends Component {
                                                     expandIcon={<ExpandMoreIcon />}
                                                     aria-controls="panel1a-content"
                                                     id="panel1a-header">
-                                                    <Typography>Zamówienie nr {order.orderId}</Typography>
+                                                    <Typography>Zamówienie nr {order.orderId} - {order.clientName}</Typography>
                                                 </ExpansionPanelSummary>
                                                 <ExpansionPanelDetails>
                                                     <Typography>

@@ -100,7 +100,6 @@ class Product extends Component {
     }
 
     localStorage.setItem(slug, JSON.stringify(products));
-    this.props.history.push("/cart");
   };
 
   render() {

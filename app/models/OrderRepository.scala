@@ -26,18 +26,18 @@ class OrderRepository @Inject() (val dbConfigProvider: DatabaseConfigProvider, v
   val clientTable = TableQuery[ClientTable]
 
   def list(): Future[Seq[Order]] = db.run {
-    order.result
+    order.sortBy(_.id).result
   }
 
   def getById(id: Int): Future[Seq[Order]] = db.run {
     order
-      .filter(_.id === id)
+      .filter(_.id === id).sortBy(_.id)
       .result
   }
 
   def getByClientId(id: Int): Future[Seq[Order]] = db.run {
     order
-      .filter(_.client_id === id)
+      .filter(_.client_id === id).sortBy(_.id)
       .result
   }
 
