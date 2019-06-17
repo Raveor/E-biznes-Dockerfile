@@ -77,8 +77,14 @@ class Cart extends Component {
         order.books.push({book_id: item.id, quantity: item.quantity});
       });
 
-      axios.put("http://localhost:9000/api/order", {order}, {headers: {'X-Auth-Token': window.token}}).then(data => <Redirect to={'/orders'} />);
-  }
+      items = [];
+      this.props.updateNumber(items.length);
+      this.updateItems(items);
+
+      axios.put("http://localhost:9000/api/order", {order}, {headers: {'X-Auth-Token': window.token}}).then(data => {
+          return <Redirect to={"/orders"} />;
+      });
+}
 
   render() {
     let totalPrice;
@@ -91,7 +97,7 @@ class Cart extends Component {
     let checkout;
     if(window.token !== undefined) {
           checkout = (
-                  <Button variant="raised" color="primary" onClick={this.placeOrder}>ZAMÓW</Button>
+                  <Button variant="raised" color="primary" onClick={() => this.placeOrder()}>ZAMÓW</Button>
           )
       } else {
       checkout = <p>Zaloguj się, by móc kontynuować</p>
